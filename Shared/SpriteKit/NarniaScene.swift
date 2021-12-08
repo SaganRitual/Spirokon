@@ -86,11 +86,7 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         return PixieView<TumblerModel>().environmentObject(appModel)
     }
 
-    func penOffset(for tumblerIx: Int) -> Double {
-        let offset = appModel.tumblers[tumblerIx].pen.value
-        print("penOffset(for: \(tumblerIx) -> \(offset)")
-        return offset
-    }
+    func penOffset(for tumblerIx: Int) -> Double { appModel.tumblers[tumblerIx].pen.value }
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
         let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radius.value
@@ -117,7 +113,6 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
 
     func setPen(_ newPen: Double, for tumblerIx: Int) {
         pixies[tumblerIx].pen.position.x = newPen
-        print("setPen(\(newPen), for: \(tumblerIx)")
     }
 
     func setRadius(_ newRadius: Double, for tumblerIx: Int) {
@@ -141,14 +136,17 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
             return
         }
 
-        let deltaTime = currentTime - previousTickTime
+        // Ignore deltaTime > 1 frame, to prevent the huge leaps forward while
+        // the app is still doing all its extra cpu usage up front. At some point
+        // I should make a splash screen and wait for it to settle.
+        let deltaTime = min(currentTime - previousTickTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-        // Don't do anything until the app settles. Rolling for
-        // jumps of more than three frames looks ugly, and is probably
-        // at least partly responsible for causing the app to
-        // take longer to settle
-        guard deltaTime < 3.0 / 60.0 else { return }
+//        // Don't do anything until the app settles. Rolling for
+//        // jumps of more than three frames looks ugly, and is probably
+//        // at least partly responsible for causing the app to
+//        // take longer to settle
+//        guard deltaTime < 3.0 / 60.0 else { return }
 
         let rotateBy = appModel.cycleSpeed.value * Double.tau * deltaTime
 
