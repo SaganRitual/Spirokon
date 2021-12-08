@@ -45,8 +45,24 @@ class Spirokon {
         }
     }
 
+    func rollEverything(rotateBy radians: Double, startAt: Spirokonable? = nil) {
+        let pixie = startAt ?? ancestorOfAll
+
+        if pixie !== ancestorOfAll {
+            rollPixie(pixie, rotateBy: radians)
+        }
+
+        for child in pixie.spirokonChildren {
+            rollEverything(rotateBy: -radians / child.size.radius, startAt: child)
+        }
+    }
+
     func rollPixie(_ pixie: Spirokonable, rotateBy radians: Double) {
-        precondition(radians.isFinite)
+        // As of 2021.12.08, we allow the UI to set the size of a pixie to zero, which
+        // makes us want to rotate it infinitely in response to any parental rotation. Don't
+        // do that, but don't consider it an error. Just skip the infinite rotation and move on
+        // to the next pixie.
+        if radians.isInfinite { return }
 
         pixie.rotation -= radians
 
@@ -66,18 +82,6 @@ class Spirokon {
         sprite.position += parent.skNode.position - parentFullScaleCenter
 
 //        print(": pixie \(pixie.position.compact()) -> \(sprite.position.compact()) size \(pixie.size.compact()) -> \(sprite.size.compact())")
-    }
-
-    func rollEverything(rotateBy radians: Double, startAt: Spirokonable? = nil) {
-        let pixie = startAt ?? ancestorOfAll
-
-        if pixie !== ancestorOfAll {
-            rollPixie(pixie, rotateBy: radians)
-        }
-
-        for child in pixie.spirokonChildren {
-            rollEverything(rotateBy: -radians / child.size.radius, startAt: child)
-        }
     }
 
     func transformPosition(for child_: Spirokonable) -> CGAffineTransform {
