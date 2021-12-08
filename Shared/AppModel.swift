@@ -12,7 +12,7 @@ class AppModel: ObservableObject {
 
     static let colorSpeedRange = 0.0...2.0
     static let cycleSpeedRange = 0.0...1.0
-    static let dotDensityRange = 0.0...15.0
+    static let dotDensityRange = 0.0...30.0
     static let trailDecayRange = 0.0...60.0
 
     init(_ cTumblers: Int = 2) {
