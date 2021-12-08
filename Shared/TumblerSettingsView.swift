@@ -131,7 +131,8 @@ struct TumblerSettingsView: View {
             }.padding(.bottom)
 
             radiusSlider
-            penSlider
+
+            if tumblerIx != 0 { penSlider }
         }
         .frame(minWidth: 200)
     }
