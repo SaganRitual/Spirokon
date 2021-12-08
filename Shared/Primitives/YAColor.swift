@@ -25,9 +25,9 @@ extension YAColor {
 
     static func css(_ code: String) -> YAColor {
         precondition(code.first! == "#")
-        let r = Double(Int(code.substr(1..<3), radix: 16)!) / 100.0
-        let g = Double(Int(code.substr(3..<5), radix: 16)!) / 100.0
-        let b = Double(Int(code.substr(5..<7), radix: 16)!) / 100.0
+        let r = Double(Int(code.substr(1..<3), radix: 16)!) / 256.0
+        let g = Double(Int(code.substr(3..<5), radix: 16)!) / 256.0
+        let b = Double(Int(code.substr(5..<7), radix: 16)!) / 256.0
         return YAColor(red: r, green: g, blue: b, alpha: 1)
     }
 
