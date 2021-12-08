@@ -5,9 +5,17 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var appModel: AppModel
 
+    #if os(macOS)
+    let name = "Spirokon macOS"
+    #elseif os(iOS)
+    let name = "Spirokon iOS"
+    #else
+    #error("Not supported, at least not yet")
+    #endif
+
     var body: some View {
         VStack {
-            Text("Spirokon iOS")
+            Text(self.name)
                 .font(.largeTitle)
 
             AppSettingsView()

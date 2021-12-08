@@ -11,6 +11,9 @@ struct TumblerSettingsView: View {
 
     // These are necessary for the view to know how to display the buttons
     @State private var drawDots = true
+    @State private var pen = 0.0
+    @State private var radius = 0.0
+    @State private var rollMode = Spirokon.RollMode.normal
     @State private var showRing = true
 
     let appModel: AppModel
@@ -19,17 +22,12 @@ struct TumblerSettingsView: View {
     init(tumblerIx: Int, appModel: AppModel) {
         self.appModel = appModel
         self.tumblerIx = tumblerIx
+
         _tumblerDraw = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].draw)
         _tumblerPen = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].pen)
         _tumblerRadius = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].radius)
         _tumblerRollMode = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].rollMode)
         _tumblerShow = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].showRing)
-
-        // Zero ring never draws
-        if tumblerIx == 0 {
-            drawDots = false
-            tumblerDraw.value = false
-        }
     }
 
     var modes: [Spirokon.RollMode] {
@@ -61,14 +59,18 @@ struct TumblerSettingsView: View {
                 label: {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                 }
-            ).onChange(of: drawDots, perform: { tumblerDraw.value = $0 })
+            )
+            .onAppear { drawDots = tumblerDraw.value }
+            .onChange(of: drawDots, perform: { tumblerDraw.value = $0 })
         :
             Toggle(
                 isOn: $showRing,
                 label: {
                     Image(systemName: "eye.circle.fill")
                 }
-            ).onChange(of: showRing, perform: { tumblerShow.value = $0 })
+            )
+            .onAppear { showRing = tumblerShow.value }
+            .onChange(of: showRing, perform: { tumblerShow.value = $0 })
 
         return toggle
             .toggleStyle(.button)
@@ -99,13 +101,14 @@ struct TumblerSettingsView: View {
                     }
 
                     tumblerRadius.value = r
+                    radius = r
                 }
 
             Slider(
-                value: tumblerRadius.binding,
+                value: Binding(get: { radius }, set: { radius = $0; tumblerRadius.value = $0 }),
                 in: 0.0...1.0,
                 label: { Text("Radius") }
-            )
+            ).onAppear { radius = tumblerRadius.value }
         }
     }
 
@@ -113,12 +116,25 @@ struct TumblerSettingsView: View {
         HStack {
             Image(systemName: "pencil")
                 .font(.largeTitle)
+                .onTapGesture {
+                    // Poor man's slider snap
+                    var r = tumblerPen.value
+                    r -= r.truncatingRemainder(dividingBy: 0.125)
+
+                    r -= 0.125
+                    if r <= 0 {
+                        r = 1
+                    }
+
+                    tumblerPen.value = r
+                    pen = r
+                }
 
             Slider(
-                value: tumblerPen.binding,
+                value: Binding(get: { pen }, set: { pen = $0; tumblerPen.value = $0 }),
                 in: 0.0...1.0,
                 label: { Text("Pen") }
-            )
+            ).onAppear { pen = tumblerPen.value }
         }
     }
 
