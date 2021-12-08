@@ -13,7 +13,7 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: appModel.cycleSpeed.binding,
-                    in: 0.0...1.0,
+                    in: AppModel.cycleSpeedRange,
                     label: { Text("Speed") }
                 )
             }
@@ -24,7 +24,7 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: appModel.dotDensity.binding,
-                    in: 0.0...500.0,
+                    in: AppModel.dotDensityRange,
                     label: { Text("Density") }
                 )
             }
@@ -35,7 +35,7 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: appModel.colorSpeed.binding,
-                    in: 1.0...10.0,
+                    in: AppModel.colorSpeedRange,
                     label: { Text("Color speed") }
                 )
             }
@@ -46,7 +46,7 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: appModel.trailDecay.binding,
-                    in: 0.0...60.0,
+                    in: AppModel.trailDecayRange,
                     label: { Text("Trail decay") }
                 )
             }

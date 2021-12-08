@@ -142,16 +142,17 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         let deltaTime = min(currentTime - previousTickTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-//        // Don't do anything until the app settles. Rolling for
-//        // jumps of more than three frames looks ugly, and is probably
-//        // at least partly responsible for causing the app to
-//        // take longer to settle
-//        guard deltaTime < 3.0 / 60.0 else { return }
-
         let rotateBy = appModel.cycleSpeed.value * Double.tau * deltaTime
+        let oversample = 1.0 / max(1.0, appModel.dotDensity.value)
 
-        spirokon.rollEverything(rotateBy: rotateBy)
-        spirokon.dropDots(currentTime: currentTime, deltaTime: deltaTime)
+        for dt in stride(from: 0.0, to: deltaTime, by: deltaTime * oversample) {
+            spirokon.rollEverything(rotateBy: rotateBy * oversample)
+
+            // If the user slides to < 1 dot per tick, turn off all drawing
+            if appModel.dotDensity.value >= 1.0 {
+                spirokon.dropDots(currentTime: self.previousTickTime! + dt, deltaTime: deltaTime * oversample)
+            }
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
