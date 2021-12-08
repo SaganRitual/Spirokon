@@ -16,7 +16,9 @@ class PixieModel: ObservableObject {
 
         pen = Pixlet(.pen)
         pen.size = CGSize(radius: 0.01)
-        pen.sprite.isHidden = tumblerIx == 0
+
+        // Never show a pen for the outer ring, at least not yet
+        if tumblerIx == 0 { pen.sprite.color = .clear }
 
         ring = Pixlet(tumblerIx == 0 ? .outerRing : .ring, color: color)
     }

@@ -6,9 +6,10 @@ struct TumblerSettingsView: View {
     @ObservedObject var tumblerDraw: YAPublisher<Bool>
     @ObservedObject var tumblerPen: YAPublisher<Double>
     @ObservedObject var tumblerRadius: YAPublisher<Double>
-    @ObservedObject var tumblerRollMode: YAPublisher<Int>
+    @ObservedObject var tumblerRollMode: YAPublisher<Spirokon.RollMode>
     @ObservedObject var tumblerShow: YAPublisher<Bool>
 
+    // These are necessary for the view to know how to display the buttons
     @State private var drawDots = true
     @State private var showRing = true
 
@@ -31,27 +32,25 @@ struct TumblerSettingsView: View {
         }
     }
 
-    enum RollMode: Int { case stop, compensateForParent, normal }
-
-    var modes: [RollMode] {
-        tumblerIx == 0 ? [.stop, .normal] : [.stop, .compensateForParent, .normal]
+    var modes: [Spirokon.RollMode] {
+        tumblerIx == 0 ? [.fullStop, .normal] : [.fullStop, .compensate, .normal]
     }
 
     var cToggles: Int { tumblerIx == 0 ? 1 : 2 }
 
-    func makePickerSegment(for mode: RollMode) -> some View {
+    func makePickerSegment(for mode: Spirokon.RollMode) -> some View {
         let image: Image
 
         switch mode {
-        case .stop:
-            image = Image(systemName: "xmark.circle.fill")
-        case .compensateForParent:
-            image = Image(systemName: "gobackward")
-        case .normal:
-            image = Image(systemName: "play.circle.fill")
+        case .fullStop:   image = Image(systemName: "xmark.circle.fill")
+        case .compensate: image = Image(systemName: "gobackward")
+        case .normal:     image = Image(systemName: "play.circle.fill")
+
+        case .doesNotRoll:
+            preconditionFailure("This is only for rings, not for pens; serious program bug here")
         }
 
-        return image.tag(mode.rawValue)
+        return image.tag(mode)
     }
 
     func makeToggle(_ ix: Int) -> some View {

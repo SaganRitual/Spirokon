@@ -7,14 +7,14 @@ class TumblerModel: ObservableObject, Identifiable {
 
     var pen: YAPublisher<Double>
     var radius: YAPublisher<Double>
-    var rollMode: YAPublisher<Int>
+    var rollMode: YAPublisher<Spirokon.RollMode>
     var showRing: YAPublisher<Bool>
     var draw: YAPublisher<Bool>
 
     init() {
         pen = YAPublisher(1.0)
         radius = YAPublisher(1.0)
-        rollMode = YAPublisher(TumblerSettingsView.RollMode.normal.rawValue)
+        rollMode = YAPublisher(.normal)
         showRing = YAPublisher(true)
         draw = YAPublisher(true)
     }
