@@ -41,10 +41,7 @@ class Spirokon {
             guard appModel.tumblers[tumblerIx].draw.value == true else { continue }
             let pixie = scene.pixies[tumblerIx]
 
-            scene.dotter.dropDot(
-                on: pixie.ring.sprite, at: pixie.pen.sprite.position,
-                currentTime: currentTime
-            )
+            scene.dotter.dropDot(at: pixie.pen.sprite.position, deltaTime: deltaTime)
         }
     }
 
@@ -53,15 +50,11 @@ class Spirokon {
 
         pixie.rotation -= radians
 
-        print(pixie.rollMode == .doesNotRoll ? " " : "*", terminator: "")
-        print("Roll by \(radians.asString(decimals: 4, fixedWidth: 10))", terminator: "")
+//        print(pixie.rollMode == .doesNotRoll ? " " : "*", terminator: "")
+//        print("Roll by \(radians.asString(decimals: 4, fixedWidth: 10))", terminator: "")
 
         let parent = pixie.spirokonParent!
-
-        let parentRotator = pixie.rollMode == .doesNotRoll ?
-            CGAffineTransform.identity :
-            CGAffineTransform(rotationAngle: parent.rotation)
-
+        let parentRotator = CGAffineTransform(rotationAngle: parent.rotation)
         let parentFullScaleCenter = parent.position << transformPosition(for: parent)
 
         let sprite = (pixie as? Pixlet)!.sprite
@@ -72,7 +65,7 @@ class Spirokon {
         // more transform-y way of doing this, but I haven't figured it out
         sprite.position += parent.skNode.position - parentFullScaleCenter
 
-        print(": pixie \(pixie.position.compact()) -> \(sprite.position.compact()) size \(pixie.size.compact()) -> \(sprite.size.compact())")
+//        print(": pixie \(pixie.position.compact()) -> \(sprite.position.compact()) size \(pixie.size.compact()) -> \(sprite.size.compact())")
     }
 
     func rollEverything(rotateBy radians: Double, startAt: Spirokonable? = nil) {

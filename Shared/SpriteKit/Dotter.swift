@@ -5,6 +5,7 @@ import SpriteKit
 class Dotter {
     let nscene: NarniaScene
     var dotSize: CGSize
+    var currentColor = YAColor.css("#FF0000")
 
     init(_ nscene: NarniaScene, dotSize: CGSize) {
         self.nscene = nscene
@@ -15,18 +16,14 @@ class Dotter {
         color.withAlphaComponent(alpha)
     }
 
-    func dropDot(
-        on ringSprite: SKSpriteNode, at position: CGPoint, currentTime: TimeInterval
-    ) {
-        let dotsColorSpeed = nscene.appModel.colorSpeed.value
-        let fractionOfCycle = currentTime.truncatingRemainder(dividingBy: dotsColorSpeed)
-        let hue = fractionOfCycle / dotsColorSpeed
-        let color = YAColor(hue: hue, saturation: 1, brightness: 1, alpha: 1)
+    func dropDot(at position: CGPoint, deltaTime: TimeInterval) {
+        let colorRotation = deltaTime * nscene.appModel.colorSpeed.value
+        currentColor = currentColor.rotateHue(byAngle: colorRotation)
 
         let dot = SpritePool.dotsPool.makeSprite()
-        dot.position = ringSprite.convert(position, to: nscene)
+        dot.position = position
         dot.size = dotSize
-        dot.color = color
+        dot.color = currentColor
         dot.alpha = 1
         nscene.addChild(dot)
 
