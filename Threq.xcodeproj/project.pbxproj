@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D40BA043275D4C29005A938F /* Spirokon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA042275D4C29005A938F /* Spirokon.swift */; };
-		D40BA044275D4C29005A938F /* Spirokon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA042275D4C29005A938F /* Spirokon.swift */; };
-		D40BA051275D9833005A938F /* GridPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA046275D9833005A938F /* GridPoint.swift */; };
-		D40BA052275D9833005A938F /* GridPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA046275D9833005A938F /* GridPoint.swift */; };
 		D40BA053275D9833005A938F /* YAColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA047275D9833005A938F /* YAColor.swift */; };
 		D40BA054275D9833005A938F /* YAColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA047275D9833005A938F /* YAColor.swift */; };
 		D40BA055275D9833005A938F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40BA048275D9833005A938F /* Extensions.swift */; };
@@ -63,11 +59,13 @@
 		D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA2275AD47D00539161 /* AppModel.swift */; };
 		D4CD8AA6275AD4AA00539161 /* TumblerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */; };
 		D4CD8AA7275AD4AA00539161 /* TumblerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */; };
+		D4EABC1927602E8500ADAD0B /* Spirokon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EABC1827602E8500ADAD0B /* Spirokon.swift */; };
+		D4EABC1A27602E8500ADAD0B /* Spirokon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EABC1827602E8500ADAD0B /* Spirokon.swift */; };
+		D4EABC1C276037D300ADAD0B /* Pixlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EABC1B276037D300ADAD0B /* Pixlet.swift */; };
+		D4EABC1D276037D300ADAD0B /* Pixlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EABC1B276037D300ADAD0B /* Pixlet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D40BA042275D4C29005A938F /* Spirokon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spirokon.swift; sourceTree = "<group>"; };
-		D40BA046275D9833005A938F /* GridPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridPoint.swift; sourceTree = "<group>"; };
 		D40BA047275D9833005A938F /* YAColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YAColor.swift; sourceTree = "<group>"; };
 		D40BA048275D9833005A938F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D40BA049275D9833005A938F /* Overload2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overload2D.swift; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		D4CD8A9F275AD0A800539161 /* YAPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAPublisher.swift; sourceTree = "<group>"; };
 		D4CD8AA2275AD47D00539161 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TumblerModel.swift; sourceTree = "<group>"; };
+		D4EABC1827602E8500ADAD0B /* Spirokon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spirokon.swift; sourceTree = "<group>"; };
+		D4EABC1B276037D300ADAD0B /* Pixlet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pixlet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,10 +120,9 @@
 		D40BA045275D9833005A938F /* Primitives */ = {
 			isa = PBXGroup;
 			children = (
-				D40BA046275D9833005A938F /* GridPoint.swift */,
-				D40BA047275D9833005A938F /* YAColor.swift */,
 				D40BA048275D9833005A938F /* Extensions.swift */,
 				D40BA049275D9833005A938F /* Overload2D.swift */,
+				D40BA047275D9833005A938F /* YAColor.swift */,
 			);
 			path = Primitives;
 			sourceTree = "<group>";
@@ -131,12 +130,14 @@
 		D40BA04A275D9833005A938F /* SpriteKit */ = {
 			isa = PBXGroup;
 			children = (
-				D40BA04B275D9833005A938F /* NarniaView.swift */,
-				D40BA04C275D9833005A938F /* PixieView.swift */,
-				D40BA04D275D9833005A938F /* NarniaScene.swift */,
 				D40BA04E275D9833005A938F /* Dotter.swift */,
-				D40BA04F275D9833005A938F /* SpritePool.xcassets */,
+				D40BA04D275D9833005A938F /* NarniaScene.swift */,
+				D40BA04B275D9833005A938F /* NarniaView.swift */,
+				D4EABC1B276037D300ADAD0B /* Pixlet.swift */,
+				D4CD8A9C275ABA7100539161 /* PixieModel.swift */,
+				D40BA04C275D9833005A938F /* PixieView.swift */,
 				D40BA050275D9833005A938F /* SpritePool.swift */,
+				D40BA04F275D9833005A938F /* SpritePool.xcassets */,
 			);
 			path = SpriteKit;
 			sourceTree = "<group>";
@@ -163,8 +164,7 @@
 				D4CD8AA2275AD47D00539161 /* AppModel.swift */,
 				D42621F9275C8D990034821A /* AppSettingsView.swift */,
 				D4CD8A25275A9F5800539161 /* ContentView.swift */,
-				D4CD8A9C275ABA7100539161 /* PixieModel.swift */,
-				D40BA042275D4C29005A938F /* Spirokon.swift */,
+				D4EABC1827602E8500ADAD0B /* Spirokon.swift */,
 				D42621FF275CFA680034821A /* SettingsView.swift */,
 				D4CD8A24275A9F5800539161 /* ThreqApp.swift */,
 				D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */,
@@ -352,17 +352,17 @@
 				D4262200275CFA680034821A /* SettingsView.swift in Sources */,
 				D4CD8AA3275AD47D00539161 /* AppModel.swift in Sources */,
 				D40BA05B275D9833005A938F /* PixieView.swift in Sources */,
+				D4EABC1C276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D40BA05F275D9833005A938F /* Dotter.swift in Sources */,
+				D4EABC1927602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA063275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05D275D9833005A938F /* NarniaScene.swift in Sources */,
-				D40BA051275D9833005A938F /* GridPoint.swift in Sources */,
 				D4CD8AA0275AD0A800539161 /* YAPublisher.swift in Sources */,
 				D4CD8A36275A9F5A00539161 /* ContentView.swift in Sources */,
 				D40BA059275D9833005A938F /* NarniaView.swift in Sources */,
 				D42621FD275C90560034821A /* TumblerSettingsView.swift in Sources */,
 				D40BA055275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */,
-				D40BA043275D4C29005A938F /* Spirokon.swift in Sources */,
 				D40BA057275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9D275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA6275AD4AA00539161 /* TumblerModel.swift in Sources */,
@@ -378,17 +378,17 @@
 				D4262201275CFA680034821A /* SettingsView.swift in Sources */,
 				D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */,
 				D40BA05C275D9833005A938F /* PixieView.swift in Sources */,
+				D4EABC1D276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D40BA060275D9833005A938F /* Dotter.swift in Sources */,
+				D4EABC1A27602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA064275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05E275D9833005A938F /* NarniaScene.swift in Sources */,
-				D40BA052275D9833005A938F /* GridPoint.swift in Sources */,
 				D4CD8AA1275AD0A800539161 /* YAPublisher.swift in Sources */,
 				D4CD8A37275A9F5A00539161 /* ContentView.swift in Sources */,
 				D40BA05A275D9833005A938F /* NarniaView.swift in Sources */,
 				D42621FE275C90560034821A /* TumblerSettingsView.swift in Sources */,
 				D40BA056275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */,
-				D40BA044275D4C29005A938F /* Spirokon.swift in Sources */,
 				D40BA058275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9E275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA7275AD4AA00539161 /* TumblerModel.swift in Sources */,

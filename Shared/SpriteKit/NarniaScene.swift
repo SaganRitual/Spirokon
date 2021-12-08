@@ -4,7 +4,7 @@ import Combine
 import SpriteKit
 import SwiftUI
 
-class NarniaScene: SKScene, ObservableObject {
+class NarniaScene: SKScene, ObservableObject, Spirokonable {
     let appModel: AppModel
     var dotter: Dotter!
     var spirokon: Spirokon!
@@ -17,6 +17,23 @@ class NarniaScene: SKScene, ObservableObject {
     var penObservers = [AnyCancellable]()
     var showRingObservers = [AnyCancellable]()
 
+    // So the Spirokon can see the scene as the ancestor of all the rings n stuff
+    // swiftlint:disable unused_setter_value
+    var rotation: Double {
+        get { 0 }
+        set { preconditionFailure("Ancestor doesn't rotate") }
+    }
+
+    var spirokonChildren = [Spirokonable]()
+
+    var spirokonParent: Spirokonable? {
+        get { nil }
+        set { preconditionFailure("Ancestor doesn't have a parent") }
+    }
+
+    var skNode: SKNode { self }
+    // swiftlint:enable unused_setter_value
+
     init(appModel: AppModel) {
         self.appModel = appModel
 
@@ -26,13 +43,22 @@ class NarniaScene: SKScene, ObservableObject {
         self.backgroundColor = .black
 
         self.dotter = Dotter(self, dotSize: CGSize(radius: 3))
-        self.spirokon = Spirokon(nscene: self)
+        self.spirokon = Spirokon(appModel: appModel, ancestorOfAll: self)
+    }
+
+    override func didMove(to view: SKView) {
+        var parent: Spirokonable = self
+        for pixie in pixies {
+            spirokon.addChild(pixie.ring, to: parent)
+            spirokon.addChild(pixie.pen, to: pixie.ring)
+            parent = pixie.ring
+        }
     }
 
     func makePixieView(_ tumblerIx: Int) -> some View {
-        let pm = PixieModel(tumblerIx, 2.0 * (1.5 + Double(tumblerIx)))
+        let pm = PixieModel(tumblerIx)
 
-        if pixies.isEmpty { pm.beAdopted(by: self) } else { pm.beAdopted(by: pixies.last!) }
+        pm.addToScene(self)
 
         pixies.append(pm)
 
@@ -61,24 +87,20 @@ class NarniaScene: SKScene, ObservableObject {
     }
 
     func penOffset(for tumblerIx: Int) -> Double {
-        appModel.tumblers[tumblerIx].pen.value * pixies[tumblerIx].armSprite.size.width
+        let offset = appModel.tumblers[tumblerIx].pen.value
+        print("penOffset(for: \(tumblerIx) -> \(offset)")
+        return offset
     }
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
         let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radius.value
-        let zipScale = appModel.tumblers[0..<tumblerIx].reversed().reduce(1) { $0 * $1.radius.value }
         let forMyRadius = (1.0 - modelRadius)
-        let normalOffset = zipScale * forMyRadius
-
-        return size.radius * normalOffset
+        return forMyRadius
     }
 
     func pixieRadius(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
         let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radius.value
-        let zipScale = appModel.tumblers[0..<tumblerIx].reversed().reduce(1) { $0 * $1.radius.value }
-        let normalRadius = zipScale * modelRadius
-
-        return size.radius * normalRadius
+        return modelRadius
     }
 
     func propagateScale(startAt: Int) {
@@ -88,24 +110,23 @@ class NarniaScene: SKScene, ObservableObject {
             let r = pixieRadius(for: tumblerIx)
             let p = pixieOffset(for: tumblerIx)
 
-            pixies[tumblerIx].armSprite.size = CGSize(width: r, height: 3)
-            pixies[tumblerIx].ringSprite.size = CGSize(radius: r)
-            pixies[tumblerIx].ringSprite.position = CGPoint(x: p, y: 0)
+            pixies[tumblerIx].ring.size = CGSize(radius: r)
+            pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
         }
     }
 
     func setPen(_ newPen: Double, for tumblerIx: Int) {
-        pixies[tumblerIx].penSprite.position.x = newPen * pixies[tumblerIx].armSprite.size.width
+        pixies[tumblerIx].pen.position.x = newPen
+        print("setPen(\(newPen), for: \(tumblerIx)")
     }
 
     func setRadius(_ newRadius: Double, for tumblerIx: Int) {
         let r = pixieRadius(for: tumblerIx, modelRadius: newRadius)
         let p = pixieOffset(for: tumblerIx, modelRadius: newRadius)
 
-        pixies[tumblerIx].penSprite.position.x = penOffset(for: tumblerIx)
-        pixies[tumblerIx].armSprite.size = CGSize(width: r, height: 3)
-        pixies[tumblerIx].ringSprite.size = CGSize(radius: r)
-        pixies[tumblerIx].ringSprite.position = CGPoint(x: p, y: 0)
+        pixies[tumblerIx].pen.position.x = penOffset(for: tumblerIx)
+        pixies[tumblerIx].ring.size = CGSize(radius: r)
+        pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
 
         propagateScale(startAt: tumblerIx)
     }
@@ -123,7 +144,15 @@ class NarniaScene: SKScene, ObservableObject {
         let deltaTime = currentTime - previousTickTime
         self.previousTickTime = currentTime
 
-        spirokon.rotate(deltaTime: deltaTime)
+        // Don't do anything until the app settles. Rolling for
+        // jumps of more than three frames looks ugly, and is probably
+        // at least partly responsible for causing the app to
+        // take longer to settle
+        guard deltaTime < 3.0 / 60.0 else { return }
+
+        let rotateBy = appModel.cycleSpeed.value * Double.tau * deltaTime
+
+        spirokon.rollEverything(rotateBy: rotateBy)
         spirokon.dropDots(currentTime: currentTime, deltaTime: deltaTime)
     }
 

@@ -5,7 +5,7 @@ import SwiftUI
 class AppModel: ObservableObject {
     @Published var tumblers: [TumblerModel]
 
-    var cycleSpeed = YAPublisher(0.1)
+    var cycleSpeed = YAPublisher(0.15)
     var colorSpeed = YAPublisher(5.0)
     var dotDensity = YAPublisher(20.0)
     var trailDecay = YAPublisher(10.0)

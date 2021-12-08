@@ -31,6 +31,19 @@ extension YAColor {
         return YAColor(red: r, green: g, blue: b, alpha: 1)
     }
 
+    func rotateHue(byAngle radians: Double) -> YAColor {
+        var h = CGFloat.zero, s = CGFloat.zero, b = CGFloat.zero, a = CGFloat.zero
+        self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+
+        h = (h + (radians / .tau)).truncatingRemainder(dividingBy: 1.0)
+
+        #if os(macOS)
+        return NSColor(calibratedHue: h, saturation: s, brightness: b, alpha: a)
+        #elseif os(iOS)
+        return UIColor(hue: h, saturation: s, brightness: b, alpha: a)
+        #endif
+    }
+
     func scale(_ component: Scale, by scaleFactor: Double) -> YAColor {
         if [Scale.red, .green, .blue, .rgbAlpha].contains(component) {
             return scaleRGBA(component, by: scaleFactor)
