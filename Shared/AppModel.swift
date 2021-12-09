@@ -3,7 +3,7 @@
 import SwiftUI
 
 class AppModel: ObservableObject {
-    @Published var llamasDismissed = false
+    @Published var averageLlama = 0.0
     @Published var llamasLlocated = 0
     @Published var narniaIsReady = false
     @Published var tumblers: [TumblerModel]

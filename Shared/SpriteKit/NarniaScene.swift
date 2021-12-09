@@ -4,7 +4,7 @@ import Combine
 import SpriteKit
 import SwiftUI
 
-class NarniaScene: SKScene, ObservableObject, Spirokonable {
+class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     let appModel: AppModel
     var dotter: Dotter!
     var spirokon: Spirokon!
@@ -135,9 +135,13 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
     }
 
     var cTicksInLimit = 0
+    var deltas = Cbuffer<Double>(cElements: 100, mode: .putOnlyRing)
 
     override func update(_ currentTime: TimeInterval) {
-        guard let previousTickTime = self.previousTickTime else {
+        self.view!.showsFPS = true
+        self.view!.showsNodeCount = true
+
+        guard let previousTickTime = previousTickTime else {
             self.previousTickTime = currentTime
             return
         }
@@ -149,14 +153,20 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         let truncatedDeltaTime = min(deltaTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-        if deltaTime < 0.2 {
+        if deltaTime < 0.02 {
             cTicksInLimit += 1
             if cTicksInLimit > 60 { appModel.narniaIsReady = true }
-        } else {
+        } else if !appModel.narniaIsReady {
             cTicksInLimit = 0
         }
 
-        guard appModel.narniaIsReady else { appModel.llamasLlocated += 1; return  }
+        guard appModel.narniaIsReady else {
+            deltas.put(deltaTime)
+            appModel.llamasLlocated += 1
+            appModel.averageLlama = deltas.elements.reduce(0.0, { $0 + ($1 ?? 0.0) }) / Double(deltas.count)
+            assert(appModel.averageLlama.isFinite)
+            return
+        }
 
         let rotateBy = appModel.cycleSpeed.value * Double.tau * truncatedDeltaTime
         let oversample = 1.0 / max(1.0, appModel.dotDensity.value)

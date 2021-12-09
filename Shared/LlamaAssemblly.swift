@@ -13,9 +13,9 @@ struct LlamaAssemblly: View {
 
             VStack {
                 Text("Llocating Llamas")
-                Text("\(appModel.llamasLlocated)")
+                Text("\(appModel.llamasLlocated) : \(appModel.averageLlama.asString(decimals: 6))")
             }
-            .font(Font.system(size: 60))
+            .font(Font.system(size: 60).monospaced())
         }
     }
 }
