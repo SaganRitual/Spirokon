@@ -100,6 +100,8 @@ struct TumblerSettingsView: View {
                         r = 1
                     }
 
+                    appModel.tumblers[tumblerIx].radiusSliderState.userInput(true, at: radius)
+                    appModel.tumblers[tumblerIx].radiusSliderState.userInput(false, at: r)
                     tumblerRadius.value = r
                     radius = r
                 }
@@ -107,8 +109,9 @@ struct TumblerSettingsView: View {
             Slider(
                 value: Binding(get: { radius }, set: { radius = $0; tumblerRadius.value = $0 }),
                 in: 0.0...1.0,
-                label: { Text("Radius") }
-            ).onAppear { radius = tumblerRadius.value }
+                label: { Text("Radius") },
+                onEditingChanged: { appModel.tumblers[tumblerIx].radiusSliderState.userInput($0, at: radius) }
+            ).onAppear { radius = appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition }
         }
     }
 
@@ -126,6 +129,8 @@ struct TumblerSettingsView: View {
                         r = 1
                     }
 
+                    appModel.tumblers[tumblerIx].penSliderState.userInput(true, at: pen)
+                    appModel.tumblers[tumblerIx].penSliderState.userInput(false, at: r)
                     tumblerPen.value = r
                     pen = r
                 }
@@ -133,8 +138,9 @@ struct TumblerSettingsView: View {
             Slider(
                 value: Binding(get: { pen }, set: { pen = $0; tumblerPen.value = $0 }),
                 in: 0.0...1.0,
-                label: { Text("Pen") }
-            ).onAppear { pen = tumblerPen.value }
+                label: { Text("Pen") },
+                onEditingChanged: { appModel.tumblers[tumblerIx].penSliderState.userInput($0, at: pen) }
+            ).onAppear { pen = appModel.tumblers[tumblerIx].penSliderState.trackingPosition }
         }
     }
 

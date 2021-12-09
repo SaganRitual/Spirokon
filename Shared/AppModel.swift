@@ -19,9 +19,9 @@ class AppModel: ObservableObject {
         tumblers = (0..<cTumblers).map {
             let t = TumblerModel()
 
-            if $0 == 0 { t.radius.value = 1.0; t.draw.value = false; t.showRing.value = true }
+            if $0 == 0 { t.radiusSliderState.trackingPosition = 1.0; t.draw.value = false; t.showRing.value = true }
 
-            if $0 != 0 { t.radius.value = 0.5; t.pen.value = 0.75 }
+            if $0 != 0 { t.radiusSliderState.trackingPosition = 0.5; t.penSliderState.trackingPosition = 0.75 }
 
             if $0 == 1 { t.showRing.value = true; t.draw.value = true }
             if $0 > 1  { t.showRing.value = false; t.draw.value = false }

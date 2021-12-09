@@ -13,8 +13,8 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
     var previousTickTime: TimeInterval?
     var pixies = [PixieModel]()
     var drawObservers = [AnyCancellable]()
-    var radiusObservers = [AnyCancellable]()
-    var penObservers = [AnyCancellable]()
+    var radiusObservers = [NSKeyValueObservation]()
+    var penObservers = [NSKeyValueObservation]()
     var showRingObservers = [AnyCancellable]()
 
     // So the Spirokon can see the scene as the ancestor of all the rings n stuff
@@ -62,14 +62,16 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
 
         pixies.append(pm)
 
-        let r = appModel.tumblers[tumblerIx].radius.publisher.sink {
-            self.setRadius($0, for: tumblerIx)
+        let r = appModel.tumblers[tumblerIx].radiusSliderState.observe(\.trackingPosition, options: .new) {
+            _, trackingPosition in
+            self.setRadius(trackingPosition.newValue!, for: tumblerIx)
         }
 
         radiusObservers.append(r)
 
-        let p = appModel.tumblers[tumblerIx].pen.publisher.sink {
-            self.setPen($0, for: tumblerIx)
+        let p = appModel.tumblers[tumblerIx].penSliderState.observe(\.trackingPosition, options: .new) {
+            _, trackingPosition in
+            self.setPen(trackingPosition.newValue!, for: tumblerIx)
         }
 
         penObservers.append(p)
@@ -80,22 +82,24 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
 
         showRingObservers.append(s)
 
-        setRadius(appModel.tumblers[tumblerIx].radius.value, for: tumblerIx)
-        setPen(appModel.tumblers[tumblerIx].pen.value, for: tumblerIx)
+        setRadius(appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition, for: tumblerIx)
+        setPen(appModel.tumblers[tumblerIx].penSliderState.trackingPosition, for: tumblerIx)
 
         return PixieView<TumblerModel>().environmentObject(appModel)
     }
 
-    func penOffset(for tumblerIx: Int) -> Double { appModel.tumblers[tumblerIx].pen.value }
+    func penOffset(for tumblerIx: Int) -> Double {
+        appModel.tumblers[tumblerIx].penSliderState.trackingPosition
+    }
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radius.value
+        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition
         let forMyRadius = (1.0 - modelRadius)
         return forMyRadius
     }
 
     func pixieRadius(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radius.value
+        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition
         return modelRadius
     }
 
@@ -146,6 +150,11 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         let oversample = 1.0 / max(1.0, appModel.dotDensity.value)
 
         for dt in stride(from: 0.0, to: deltaTime, by: deltaTime * oversample) {
+            for t in appModel.tumblers {
+                t.radiusSliderState.update(deltaTime: deltaTime)
+                t.penSliderState.update(deltaTime: deltaTime)
+            }
+
             spirokon.rollEverything(rotateBy: rotateBy * oversample)
 
             // If the user slides to < 1 dot per tick, turn off all drawing

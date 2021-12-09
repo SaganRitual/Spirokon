@@ -11,6 +11,9 @@ class TumblerModel: ObservableObject, Identifiable {
     var showRing: YAPublisher<Bool>
     var draw: YAPublisher<Bool>
 
+    var radiusSliderState = SliderStateMachine()
+    var penSliderState = SliderStateMachine()
+
     init() {
         pen = YAPublisher(1.0)
         radius = YAPublisher(1.0)
