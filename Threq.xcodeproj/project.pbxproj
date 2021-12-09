@@ -47,6 +47,8 @@
 		D4262201275CFA680034821A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FF275CFA680034821A /* SettingsView.swift */; };
 		D47874E92761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EA2761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
+		D47874EF2761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
+		D47874F02761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
 		D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A36275A9F5A00539161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A25275A9F5800539161 /* ContentView.swift */; };
@@ -88,6 +90,7 @@
 		D42621FC275C90560034821A /* TumblerSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TumblerSettingsView.swift; sourceTree = "<group>"; };
 		D42621FF275CFA680034821A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D47874E82761AF45006D129F /* SliderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderState.swift; sourceTree = "<group>"; };
+		D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaAssemblly.swift; sourceTree = "<group>"; };
 		D4CD8A24275A9F5800539161 /* ThreqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreqApp.swift; sourceTree = "<group>"; };
 		D4CD8A25275A9F5800539161 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D4CD8A26275A9F5A00539161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 				D4CD8AA2275AD47D00539161 /* AppModel.swift */,
 				D42621F9275C8D990034821A /* AppSettingsView.swift */,
 				D4CD8A25275A9F5800539161 /* ContentView.swift */,
+				D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */,
 				D4EABC1827602E8500ADAD0B /* Spirokon.swift */,
 				D42621FF275CFA680034821A /* SettingsView.swift */,
 				D47874E82761AF45006D129F /* SliderState.swift */,
@@ -368,6 +372,7 @@
 				D40BA055275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */,
 				D47874E92761AF45006D129F /* SliderState.swift in Sources */,
+				D47874EF2761C7DF006D129F /* LlamaAssemblly.swift in Sources */,
 				D40BA057275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9D275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA6275AD4AA00539161 /* TumblerModel.swift in Sources */,
@@ -395,6 +400,7 @@
 				D40BA056275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */,
 				D47874EA2761AF45006D129F /* SliderState.swift in Sources */,
+				D47874F02761C7DF006D129F /* LlamaAssemblly.swift in Sources */,
 				D40BA058275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9E275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA7275AD4AA00539161 /* TumblerModel.swift in Sources */,

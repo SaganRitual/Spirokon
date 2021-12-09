@@ -3,6 +3,9 @@
 import SwiftUI
 
 class AppModel: ObservableObject {
+    @Published var llamasDismissed = false
+    @Published var llamasLlocated = 0
+    @Published var narniaIsReady = false
     @Published var tumblers: [TumblerModel]
 
     var colorSpeed = YAPublisher(0.15)

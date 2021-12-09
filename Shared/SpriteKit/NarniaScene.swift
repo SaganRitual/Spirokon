@@ -134,6 +134,8 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         appModel.tumblers.firstIndex { $0.id == model.id }!
     }
 
+    var cTicksInLimit = 0
+
     override func update(_ currentTime: TimeInterval) {
         guard let previousTickTime = self.previousTickTime else {
             self.previousTickTime = currentTime
@@ -143,23 +145,33 @@ class NarniaScene: SKScene, ObservableObject, Spirokonable {
         // Ignore deltaTime > 1 frame, to prevent the huge leaps forward while
         // the app is still doing all its extra cpu usage up front. At some point
         // I should make a splash screen and wait for it to settle.
-        let deltaTime = min(currentTime - previousTickTime, 1.0 / 60.0)
+        let deltaTime = currentTime - previousTickTime
+        let truncatedDeltaTime = min(deltaTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-        let rotateBy = appModel.cycleSpeed.value * Double.tau * deltaTime
+        if deltaTime < 0.2 {
+            cTicksInLimit += 1
+            if cTicksInLimit > 60 { appModel.narniaIsReady = true }
+        } else {
+            cTicksInLimit = 0
+        }
+
+        guard appModel.narniaIsReady else { appModel.llamasLlocated += 1; return  }
+
+        let rotateBy = appModel.cycleSpeed.value * Double.tau * truncatedDeltaTime
         let oversample = 1.0 / max(1.0, appModel.dotDensity.value)
 
-        for dt in stride(from: 0.0, to: deltaTime, by: deltaTime * oversample) {
+        for dt in stride(from: 0.0, to: truncatedDeltaTime, by: truncatedDeltaTime * oversample) {
             for t in appModel.tumblers {
-                t.radiusSliderState.update(deltaTime: deltaTime)
-                t.penSliderState.update(deltaTime: deltaTime)
+                t.radiusSliderState.update(deltaTime: truncatedDeltaTime)
+                t.penSliderState.update(deltaTime: truncatedDeltaTime)
             }
 
             spirokon.rollEverything(rotateBy: rotateBy * oversample)
 
             // If the user slides to < 1 dot per tick, turn off all drawing
             if appModel.dotDensity.value >= 1.0 {
-                spirokon.dropDots(currentTime: self.previousTickTime! + dt, deltaTime: deltaTime * oversample)
+                spirokon.dropDots(currentTime: self.previousTickTime! + dt, deltaTime: truncatedDeltaTime * oversample)
             }
         }
     }
