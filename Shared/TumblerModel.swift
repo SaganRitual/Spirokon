@@ -3,22 +3,13 @@
 import SwiftUI
 
 class TumblerModel: ObservableObject, Identifiable {
-    let id = UUID()
+    enum TumblerType { case outerRing, innerRing }
 
-    var pen: YAPublisher<Double>
-    var radius: YAPublisher<Double>
-    var rollMode: YAPublisher<Spirokon.RollMode>
-    var showRing: YAPublisher<Bool>
-    var draw: YAPublisher<Bool>
+    let tumblerType: TumblerType
 
-    var radiusSliderState = SliderStateMachine()
-    var penSliderState = SliderStateMachine()
+    init(_ tumblerType: TumblerType) { self.tumblerType = tumblerType }
 
-    init() {
-        pen = YAPublisher(1.0)
-        radius = YAPublisher(1.0)
-        rollMode = YAPublisher(.normal)
-        showRing = YAPublisher(true)
-        draw = YAPublisher(true)
-    }
+    @Published var pen = 1.0
+    @Published var radius = 1.0
+    @Published var rollMode = Spirokon.RollMode.normal
 }

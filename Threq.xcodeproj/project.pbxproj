@@ -47,10 +47,14 @@
 		D4262201275CFA680034821A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FF275CFA680034821A /* SettingsView.swift */; };
 		D47874E92761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EA2761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
-		D47874EF2761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
-		D47874F02761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
+		D47874EF2761C7DF006D129F /* LlamaLlocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaLlocator.swift */; };
+		D47874F02761C7DF006D129F /* LlamaLlocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaLlocator.swift */; };
 		D47874F52761DD07006D129F /* Cbuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874F42761DD07006D129F /* Cbuffer.swift */; };
 		D47874F62761DD07006D129F /* Cbuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874F42761DD07006D129F /* Cbuffer.swift */; };
+		D47BC2B627623DEA005E1A74 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47BC2B527623DEA005E1A74 /* AppState.swift */; };
+		D47BC2B727623DEA005E1A74 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47BC2B527623DEA005E1A74 /* AppState.swift */; };
+		D47BC2B92762405D005E1A74 /* TumblerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47BC2B82762405D005E1A74 /* TumblerState.swift */; };
+		D47BC2BA2762405D005E1A74 /* TumblerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47BC2B82762405D005E1A74 /* TumblerState.swift */; };
 		D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A36275A9F5A00539161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A25275A9F5800539161 /* ContentView.swift */; };
@@ -59,8 +63,6 @@
 		D4CD8A39275A9F5A00539161 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CD8A26275A9F5A00539161 /* Assets.xcassets */; };
 		D4CD8A9D275ABA7100539161 /* PixieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A9C275ABA7100539161 /* PixieModel.swift */; };
 		D4CD8A9E275ABA7100539161 /* PixieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A9C275ABA7100539161 /* PixieModel.swift */; };
-		D4CD8AA0275AD0A800539161 /* YAPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A9F275AD0A800539161 /* YAPublisher.swift */; };
-		D4CD8AA1275AD0A800539161 /* YAPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A9F275AD0A800539161 /* YAPublisher.swift */; };
 		D4CD8AA3275AD47D00539161 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA2275AD47D00539161 /* AppModel.swift */; };
 		D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA2275AD47D00539161 /* AppModel.swift */; };
 		D4CD8AA6275AD4AA00539161 /* TumblerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */; };
@@ -92,8 +94,10 @@
 		D42621FC275C90560034821A /* TumblerSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TumblerSettingsView.swift; sourceTree = "<group>"; };
 		D42621FF275CFA680034821A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D47874E82761AF45006D129F /* SliderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderState.swift; sourceTree = "<group>"; };
-		D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaAssemblly.swift; sourceTree = "<group>"; };
+		D47874EE2761C7DF006D129F /* LlamaLlocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaLlocator.swift; sourceTree = "<group>"; };
 		D47874F42761DD07006D129F /* Cbuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cbuffer.swift; sourceTree = "<group>"; };
+		D47BC2B527623DEA005E1A74 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		D47BC2B82762405D005E1A74 /* TumblerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TumblerState.swift; sourceTree = "<group>"; };
 		D4CD8A24275A9F5800539161 /* ThreqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreqApp.swift; sourceTree = "<group>"; };
 		D4CD8A25275A9F5800539161 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D4CD8A26275A9F5A00539161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,7 +105,6 @@
 		D4CD8A31275A9F5A00539161 /* Threq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Threq.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CD8A33275A9F5A00539161 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		D4CD8A9C275ABA7100539161 /* PixieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixieModel.swift; sourceTree = "<group>"; };
-		D4CD8A9F275AD0A800539161 /* YAPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAPublisher.swift; sourceTree = "<group>"; };
 		D4CD8AA2275AD47D00539161 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TumblerModel.swift; sourceTree = "<group>"; };
 		D4EABC1827602E8500ADAD0B /* Spirokon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spirokon.swift; sourceTree = "<group>"; };
@@ -173,15 +176,16 @@
 			children = (
 				D4CD8AA2275AD47D00539161 /* AppModel.swift */,
 				D42621F9275C8D990034821A /* AppSettingsView.swift */,
+				D47BC2B527623DEA005E1A74 /* AppState.swift */,
 				D4CD8A25275A9F5800539161 /* ContentView.swift */,
-				D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */,
+				D47874EE2761C7DF006D129F /* LlamaLlocator.swift */,
 				D4EABC1827602E8500ADAD0B /* Spirokon.swift */,
 				D42621FF275CFA680034821A /* SettingsView.swift */,
 				D47874E82761AF45006D129F /* SliderState.swift */,
 				D4CD8A24275A9F5800539161 /* ThreqApp.swift */,
 				D4CD8AA5275AD4AA00539161 /* TumblerModel.swift */,
 				D42621FC275C90560034821A /* TumblerSettingsView.swift */,
-				D4CD8A9F275AD0A800539161 /* YAPublisher.swift */,
+				D47BC2B82762405D005E1A74 /* TumblerState.swift */,
 				D40BA045275D9833005A938F /* Primitives */,
 				D40BA04A275D9833005A938F /* SpriteKit */,
 				D4CD8A26275A9F5A00539161 /* Assets.xcassets */,
@@ -363,6 +367,7 @@
 				D40BA053275D9833005A938F /* YAColor.swift in Sources */,
 				D4262200275CFA680034821A /* SettingsView.swift in Sources */,
 				D4CD8AA3275AD47D00539161 /* AppModel.swift in Sources */,
+				D47BC2B92762405D005E1A74 /* TumblerState.swift in Sources */,
 				D40BA05B275D9833005A938F /* PixieView.swift in Sources */,
 				D4EABC1C276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D47874F52761DD07006D129F /* Cbuffer.swift in Sources */,
@@ -370,14 +375,14 @@
 				D4EABC1927602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA063275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05D275D9833005A938F /* NarniaScene.swift in Sources */,
-				D4CD8AA0275AD0A800539161 /* YAPublisher.swift in Sources */,
 				D4CD8A36275A9F5A00539161 /* ContentView.swift in Sources */,
 				D40BA059275D9833005A938F /* NarniaView.swift in Sources */,
 				D42621FD275C90560034821A /* TumblerSettingsView.swift in Sources */,
 				D40BA055275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */,
+				D47BC2B627623DEA005E1A74 /* AppState.swift in Sources */,
 				D47874E92761AF45006D129F /* SliderState.swift in Sources */,
-				D47874EF2761C7DF006D129F /* LlamaAssemblly.swift in Sources */,
+				D47874EF2761C7DF006D129F /* LlamaLlocator.swift in Sources */,
 				D40BA057275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9D275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA6275AD4AA00539161 /* TumblerModel.swift in Sources */,
@@ -392,6 +397,7 @@
 				D40BA054275D9833005A938F /* YAColor.swift in Sources */,
 				D4262201275CFA680034821A /* SettingsView.swift in Sources */,
 				D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */,
+				D47BC2BA2762405D005E1A74 /* TumblerState.swift in Sources */,
 				D40BA05C275D9833005A938F /* PixieView.swift in Sources */,
 				D4EABC1D276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D47874F62761DD07006D129F /* Cbuffer.swift in Sources */,
@@ -399,14 +405,14 @@
 				D4EABC1A27602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA064275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05E275D9833005A938F /* NarniaScene.swift in Sources */,
-				D4CD8AA1275AD0A800539161 /* YAPublisher.swift in Sources */,
 				D4CD8A37275A9F5A00539161 /* ContentView.swift in Sources */,
 				D40BA05A275D9833005A938F /* NarniaView.swift in Sources */,
 				D42621FE275C90560034821A /* TumblerSettingsView.swift in Sources */,
 				D40BA056275D9833005A938F /* Extensions.swift in Sources */,
 				D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */,
+				D47BC2B727623DEA005E1A74 /* AppState.swift in Sources */,
 				D47874EA2761AF45006D129F /* SliderState.swift in Sources */,
-				D47874F02761C7DF006D129F /* LlamaAssemblly.swift in Sources */,
+				D47874F02761C7DF006D129F /* LlamaLlocator.swift in Sources */,
 				D40BA058275D9833005A938F /* Overload2D.swift in Sources */,
 				D4CD8A9E275ABA7100539161 /* PixieModel.swift in Sources */,
 				D4CD8AA7275AD4AA00539161 /* TumblerModel.swift in Sources */,

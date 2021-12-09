@@ -3,13 +3,17 @@
 import SpriteKit
 
 class Dotter {
-    let nscene: NarniaScene
-    var dotSize: CGSize
+    let appState: AppState
     var currentColor = YAColor.css("#FF0000")
+    var dotSize: CGSize
+    let nscene: NarniaScene
 
-    init(_ nscene: NarniaScene, dotSize: CGSize) {
-        self.nscene = nscene
+    init(
+        _ appState: AppState, _ nscene: NarniaScene, dotSize: CGSize
+    ) {
+        self.appState = appState
         self.dotSize = dotSize
+        self.nscene = nscene
     }
 
     func color(_ color: YAColor, _ alpha: Double = 1.0) -> SKColor {
@@ -17,7 +21,7 @@ class Dotter {
     }
 
     func dropDot(at position: CGPoint, deltaTime: TimeInterval) {
-        let colorRotation = deltaTime * nscene.appModel.colorSpeed.value
+        let colorRotation = deltaTime * appState.colorSpeed
         currentColor = currentColor.rotateHue(byAngle: colorRotation)
 
         let dot = SpritePool.dotsPool.makeSprite()
@@ -27,7 +31,7 @@ class Dotter {
         dot.alpha = 1
         nscene.addChild(dot)
 
-        let fade = SKAction.fadeOut(withDuration: nscene.appModel.trailDecay.value)
+        let fade = SKAction.fadeOut(withDuration: appState.trailDecay)
         dot.run(fade) { dot.removeFromParent() }
     }
 }

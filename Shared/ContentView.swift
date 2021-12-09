@@ -4,19 +4,23 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var appModel: AppModel
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
         ZStack {
             HStack(alignment: .top) {
-                SettingsView()
-                NarniaView(appModel: appModel).padding(5)
-            }
-            .opacity(appModel.narniaIsReady ? 1.0 : 0.0)
-            .animation(.linear, value: appModel.narniaIsReady)
+                if appState.readyComponents.contains(.narnia) {
+                    SettingsView().onAppear { appState.markComponentReady(.settingsView) }
+                }
 
-            LlamaAssemblly()
-                .opacity(appModel.narniaIsReady ? 0.0 : 1.0)
-                .animation(.linear, value: appModel.narniaIsReady)
+                NarniaView(appModel: appModel, appState: appState).padding(5)
+            }
+            .opacity(appState.readyComponents.contains(.narnia) ? 1.0 : 0.0)
+            .animation(.linear, value: appState.readyComponents.contains(.narnia))
+
+            LlamaLlocator()
+                .opacity(appState.readyComponents.contains(.narnia) ? 0.0 : 1.0)
+                .animation(.linear, value: appState.readyComponents.contains(.narnia))
         }
     }
 }

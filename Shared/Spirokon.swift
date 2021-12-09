@@ -22,11 +22,13 @@ class Spirokon {
     private let ancestorOfAll: Spirokonable
     private var all = [Spirokonable]()
     private let appModel: AppModel
+    private let appState: AppState
 
     var scene: NarniaScene { (ancestorOfAll as? NarniaScene)! }
 
-    init(appModel: AppModel, ancestorOfAll: Spirokonable) {
+    init(appModel: AppModel, appState: AppState, ancestorOfAll: Spirokonable) {
         self.appModel = appModel
+        self.appState = appState
         self.ancestorOfAll = ancestorOfAll
     }
 
@@ -38,7 +40,7 @@ class Spirokon {
 
     func dropDots(currentTime: Double, deltaTime: Double) {
         for tumblerIx in 0..<appModel.tumblers.count {
-            guard appModel.tumblers[tumblerIx].draw.value == true else { continue }
+            guard appState.tumblerStates[tumblerIx].draw else { continue }
             let pixie = scene.pixies[tumblerIx]
 
             scene.dotter.dropDot(at: pixie.pen.sprite.position, deltaTime: deltaTime)

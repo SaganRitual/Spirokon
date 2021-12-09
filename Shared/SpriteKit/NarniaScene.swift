@@ -6,6 +6,7 @@ import SwiftUI
 
 class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     let appModel: AppModel
+    let appState: AppState
     var dotter: Dotter!
     var spirokon: Spirokon!
 
@@ -13,8 +14,8 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var previousTickTime: TimeInterval?
     var pixies = [PixieModel]()
     var drawObservers = [AnyCancellable]()
-    var radiusObservers = [NSKeyValueObservation]()
-    var penObservers = [NSKeyValueObservation]()
+    var radiusObservers = [AnyCancellable]()
+    var penObservers = [AnyCancellable]()
     var showRingObservers = [AnyCancellable]()
 
     // So the Spirokon can see the scene as the ancestor of all the rings n stuff
@@ -34,25 +35,17 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var skNode: SKNode { self }
     // swiftlint:enable unused_setter_value
 
-    init(appModel: AppModel) {
+    init(appModel: AppModel, appState: AppState) {
         self.appModel = appModel
+        self.appState = appState
 
         super.init(size: CGSize(width: 2048, height: 2048))
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.scaleMode = .aspectFit
         self.backgroundColor = .black
 
-        self.dotter = Dotter(self, dotSize: CGSize(radius: 3))
-        self.spirokon = Spirokon(appModel: appModel, ancestorOfAll: self)
-    }
-
-    override func didMove(to view: SKView) {
-        var parent: Spirokonable = self
-        for pixie in pixies {
-            spirokon.addChild(pixie.ring, to: parent)
-            spirokon.addChild(pixie.pen, to: pixie.ring)
-            parent = pixie.ring
-        }
+        self.dotter = Dotter(appState, self, dotSize: CGSize(radius: 3))
+        self.spirokon = Spirokon(appModel: appModel, appState: appState, ancestorOfAll: self)
     }
 
     func makePixieView(_ tumblerIx: Int) -> some View {
@@ -62,44 +55,42 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
         pixies.append(pm)
 
-        let r = appModel.tumblers[tumblerIx].radiusSliderState.observe(\.trackingPosition, options: .new) {
-            _, trackingPosition in
-            self.setRadius(trackingPosition.newValue!, for: tumblerIx)
+        let r = appState.tumblerStates[tumblerIx].radiusSliderState.$trackingPosition.sink {
+            self.setRadius($0, for: tumblerIx)
         }
 
         radiusObservers.append(r)
 
-        let p = appModel.tumblers[tumblerIx].penSliderState.observe(\.trackingPosition, options: .new) {
-            _, trackingPosition in
-            self.setPen(trackingPosition.newValue!, for: tumblerIx)
+        let p =  appState.tumblerStates[tumblerIx].penSliderState.$trackingPosition.sink {
+            self.setPen($0, for: tumblerIx)
         }
 
         penObservers.append(p)
 
-        let s = appModel.tumblers[tumblerIx].showRing.publisher.sink {
+        let s = appState.tumblerStates[tumblerIx].$showRing.sink {
             self.pixies[tumblerIx].showPixie($0)
         }
 
         showRingObservers.append(s)
 
-        setRadius(appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition, for: tumblerIx)
-        setPen(appModel.tumblers[tumblerIx].penSliderState.trackingPosition, for: tumblerIx)
+        setRadius(appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition, for: tumblerIx)
+        setPen(appState.tumblerStates[tumblerIx].penSliderState.trackingPosition, for: tumblerIx)
 
-        return PixieView<TumblerModel>().environmentObject(appModel)
+        return PixieView()
     }
 
     func penOffset(for tumblerIx: Int) -> Double {
-        appModel.tumblers[tumblerIx].penSliderState.trackingPosition
+        appState.tumblerStates[tumblerIx].penSliderState.trackingPosition
     }
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition
+        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition
         let forMyRadius = tumblerIx == 0 ? 0.0 : (1.0 - modelRadius)
         return forMyRadius
     }
 
     func pixieRadius(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition
+        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition
         return modelRadius
     }
 
@@ -117,6 +108,15 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
     func setPen(_ newPen: Double, for tumblerIx: Int) {
         pixies[tumblerIx].pen.position.x = newPen
+    }
+
+    func setSpirokonRelationships() {
+        var parent: Spirokonable = self
+        for pixie in pixies {
+            spirokon.addChild(pixie.ring, to: parent)
+            spirokon.addChild(pixie.pen, to: pixie.ring)
+            parent = pixie.ring
+        }
     }
 
     func setRadius(_ newRadius: Double, for tumblerIx: Int) {
@@ -155,24 +155,29 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
         if deltaTime < 0.02 {
             cTicksInLimit += 1
-            if cTicksInLimit > 60 { appModel.narniaIsReady = true }
-        } else if !appModel.narniaIsReady {
+            if cTicksInLimit > 60 { appState.markComponentReady(.narnia) }
+        } else if !appState.readyComponents.contains(.narnia) {
             cTicksInLimit = 0
         }
 
-        guard appModel.narniaIsReady else {
+        if appState.readyComponents.contains(.pixieViews) && !appState.appIsReady {
+            setSpirokonRelationships()
+            appState.markComponentReady(.spirokon)
+        }
+
+        guard appState.appIsReady else {
             deltas.put(deltaTime)
-            appModel.llamasLlocated += 1
-            appModel.averageLlama = deltas.elements.reduce(0.0, { $0 + ($1 ?? 0.0) }) / Double(deltas.count)
-            assert(appModel.averageLlama.isFinite)
+            appState.llamasLlocated += 1
+            appState.averageLlama = deltas.elements.reduce(0.0, { $0 + ($1 ?? 0.0) }) / Double(deltas.count)
+            assert(appState.averageLlama.isFinite)
             return
         }
 
-        let rotateBy = appModel.cycleSpeed.value * Double.tau * truncatedDeltaTime
-        let oversample = 1.0 / max(1.0, appModel.dotDensity.value)
+        let rotateBy = appState.cycleSpeed * Double.tau * truncatedDeltaTime
+        let oversample = 1.0 / max(1.0, appState.dotDensity)
 
         for dt in stride(from: 0.0, to: truncatedDeltaTime, by: truncatedDeltaTime * oversample) {
-            for t in appModel.tumblers {
+            for t in appState.tumblerStates {
                 t.radiusSliderState.update(deltaTime: truncatedDeltaTime)
                 t.penSliderState.update(deltaTime: truncatedDeltaTime)
             }
@@ -180,7 +185,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
             spirokon.rollEverything(rotateBy: rotateBy * oversample)
 
             // If the user slides to < 1 dot per tick, turn off all drawing
-            if appModel.dotDensity.value >= 1.0 {
+            if appState.dotDensity >= 1.0 {
                 spirokon.dropDots(currentTime: self.previousTickTime! + dt, deltaTime: truncatedDeltaTime * oversample)
             }
         }

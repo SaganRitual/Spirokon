@@ -4,12 +4,22 @@ import SwiftUI
 
 @main
 struct ThreqApp: App {
-    let appModel = AppModel(5)
+    @StateObject var appModel: AppModel
+    @StateObject var appState: AppState
+
+    init() {
+        let m = AppModel()
+        let s = AppState(appModel: m)
+
+        _appModel = StateObject(wrappedValue: m)
+        _appState = StateObject(wrappedValue: s)
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(appModel)
+                .environmentObject(appState)
         }
     }
 }

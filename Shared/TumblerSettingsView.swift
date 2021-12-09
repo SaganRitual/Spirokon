@@ -3,38 +3,23 @@
 import SwiftUI
 
 struct TumblerSettingsView: View {
-    @ObservedObject var tumblerDraw: YAPublisher<Bool>
-    @ObservedObject var tumblerPen: YAPublisher<Double>
-    @ObservedObject var tumblerRadius: YAPublisher<Double>
-    @ObservedObject var tumblerRollMode: YAPublisher<Spirokon.RollMode>
-    @ObservedObject var tumblerShow: YAPublisher<Bool>
+    @EnvironmentObject var tumblerModel: TumblerModel
+    @EnvironmentObject var tumblerState: TumblerState
 
-    // These are necessary for the view to know how to display the buttons
     @State private var drawDots = true
     @State private var pen = 0.0
     @State private var radius = 0.0
     @State private var rollMode = Spirokon.RollMode.normal
     @State private var showRing = true
 
-    let appModel: AppModel
-    let tumblerIx: Int
-
-    init(tumblerIx: Int, appModel: AppModel) {
-        self.appModel = appModel
-        self.tumblerIx = tumblerIx
-
-        _tumblerDraw = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].draw)
-        _tumblerPen = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].pen)
-        _tumblerRadius = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].radius)
-        _tumblerRollMode = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].rollMode)
-        _tumblerShow = ObservedObject(wrappedValue: appModel.tumblers[tumblerIx].showRing)
-    }
-
     var modes: [Spirokon.RollMode] {
-        tumblerIx == 0 ? [.fullStop, .normal] : [.fullStop, .compensate, .normal]
+        tumblerModel.tumblerType == .outerRing ? [.fullStop, .normal] : [.fullStop, .compensate, .normal]
     }
 
-    var cToggles: Int { tumblerIx == 0 ? 1 : 2 }
+    enum TumblerToggleType { case drawDots, showRing }
+    var toggles: [TumblerToggleType] {
+        tumblerModel.tumblerType == .outerRing ? [.showRing] : [.showRing, .drawDots]
+    }
 
     func makePickerSegment(for mode: Spirokon.RollMode) -> some View {
         let image: Image
@@ -51,67 +36,111 @@ struct TumblerSettingsView: View {
         return image.tag(mode)
     }
 
-    func makeToggle(_ ix: Int) -> some View {
-        let toggle = ix > 0 ?
+    func makeToggle(_ type: TumblerToggleType) -> some View {
+        switch type {
+        case .drawDots:
+            return Toggle(
+                isOn: Binding(
+                    get: {
+                        print("draw dots toggle get \(drawDots)")
+                        return drawDots },
+                    set: {
+                        print("draw dots toggle update \($0)")
+                        drawDots = $0; tumblerState.draw = $0 }
+                ),
 
-            Toggle(
-                isOn: $drawDots,
                 label: {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                 }
             )
-            .onAppear { drawDots = tumblerDraw.value }
-            .onChange(of: drawDots, perform: { tumblerDraw.value = $0 })
-        :
-            Toggle(
-                isOn: $showRing,
+            .onAppear { drawDots = tumblerState.draw }
+            .toggleStyle(.button)
+            .controlSize(SwiftUI.ControlSize.small)
+
+        case .showRing:
+            return Toggle(
+                isOn: Binding(
+                    get: {
+                        print("show ring toggle get \(showRing)")
+                        return showRing },
+                    set: {
+                        print("show ring toggle update \($0)")
+                        showRing = $0; tumblerState.showRing = $0 }
+                ),
                 label: {
                     Image(systemName: "eye.circle.fill")
                 }
             )
-            .onAppear { showRing = tumblerShow.value }
-            .onChange(of: showRing, perform: { tumblerShow.value = $0 })
-
-        return toggle
+            .onAppear { showRing = tumblerState.showRing }
             .toggleStyle(.button)
             .controlSize(SwiftUI.ControlSize.small)
+        }
     }
 
     var rollModePicker: some View {
-        Picker("", selection: tumblerRollMode.binding) {
+        Picker(
+            "",
+            selection: Binding(
+                get: { rollMode },
+                set: { rollMode = $0; tumblerModel.rollMode = $0 }
+            )
+        ) {
             ForEach(0..<modes.count) {
                 makePickerSegment(for: modes[$0])
             }
         }
         .pickerStyle(.segmented)
+        .onAppear { rollMode = tumblerModel.rollMode }
+    }
+
+    func tapTrack(sliderState: SliderStateMachine, direction: Double) {
+        let newValue: Double
+
+        if sliderState.trackingPosition <= 0 && direction == -1.0 {
+            // Moving left, if we're already at zero, or less due to
+            // floating-point stuff, start over at 1
+            newValue = 1.0
+        } else if sliderState.trackingPosition >= 1 && direction == 1.0 {
+            // Moving right, if we're already at 1.0, or greater due to
+            // floating-point stuff, start over at 0
+            newValue = 0.0
+        } else {
+            // If we're already on a 1/8 mark, move to the next one in the direction we're
+            // moving. If we're not already on one, move to the nearest one.
+            let t = sliderState.trackingPosition.truncatingRemainder(dividingBy: 0.125)
+            newValue = sliderState.trackingPosition + (t == 0 ? 0.125 : t) * direction
+        }
+
+        sliderState.trackInput(fromPosition: sliderState.trackingPosition, toPosition: newValue)
     }
 
     var radiusSlider: some View {
         HStack {
-            Image(systemName: "plusminus.circle")
+            Image(systemName: "circle")
                 .font(.largeTitle)
+
+            Image(systemName: "minus.circle.fill")
                 .onTapGesture {
-                    // Poor man's slider snap
-                    var r = tumblerRadius.value
-                    r -= r.truncatingRemainder(dividingBy: 0.125)
-
-                    r -= 0.125
-                    if r <= 0 {
-                        r = 1
-                    }
-
-                    appModel.tumblers[tumblerIx].radiusSliderState.userInput(true, at: radius)
-                    appModel.tumblers[tumblerIx].radiusSliderState.userInput(false, at: r)
-                    tumblerRadius.value = r
-                    radius = r
+                    tapTrack(
+                        sliderState: tumblerState.radiusSliderState,
+                        direction: -1.0
+                    )
                 }
 
             Slider(
-                value: Binding(get: { radius }, set: { radius = $0; tumblerRadius.value = $0 }),
+                value: $radius,
                 in: 0.0...1.0,
                 label: { Text("Radius") },
-                onEditingChanged: { appModel.tumblers[tumblerIx].radiusSliderState.userInput($0, at: radius) }
-            ).onAppear { radius = appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition }
+                onEditingChanged: { tumblerState.radiusSliderState.thumbInput($0, at: radius) }
+            ).onAppear { radius = tumblerState.radiusSliderState.trackingPosition }
+
+            Image(systemName: "plus.circle.fill")
+                .onTapGesture {
+                    tapTrack(
+                        sliderState: tumblerState.radiusSliderState,
+                        direction: 1.0
+                    )
+                }
         }
     }
 
@@ -119,28 +148,29 @@ struct TumblerSettingsView: View {
         HStack {
             Image(systemName: "pencil")
                 .font(.largeTitle)
+
+            Image(systemName: "minus.circle.fill")
                 .onTapGesture {
-                    // Poor man's slider snap
-                    var r = tumblerPen.value
-                    r -= r.truncatingRemainder(dividingBy: 0.125)
-
-                    r -= 0.125
-                    if r <= 0 {
-                        r = 1
-                    }
-
-                    appModel.tumblers[tumblerIx].penSliderState.userInput(true, at: pen)
-                    appModel.tumblers[tumblerIx].penSliderState.userInput(false, at: r)
-                    tumblerPen.value = r
-                    pen = r
+                    tapTrack(
+                        sliderState: tumblerState.penSliderState,
+                        direction: -1.0
+                    )
                 }
 
             Slider(
-                value: Binding(get: { pen }, set: { pen = $0; tumblerPen.value = $0 }),
+                value: $pen,
                 in: 0.0...1.0,
                 label: { Text("Pen") },
-                onEditingChanged: { appModel.tumblers[tumblerIx].penSliderState.userInput($0, at: pen) }
-            ).onAppear { pen = appModel.tumblers[tumblerIx].penSliderState.trackingPosition }
+                onEditingChanged: { tumblerState.penSliderState.thumbInput($0, at: pen) }
+            ).onAppear { pen = tumblerState.penSliderState.trackingPosition }
+
+            Image(systemName: "plus.circle.fill")
+                .onTapGesture {
+                    tapTrack(
+                        sliderState: tumblerState.penSliderState,
+                        direction: 1.0
+                    )
+                }
         }
     }
 
@@ -148,12 +178,12 @@ struct TumblerSettingsView: View {
         VStack {
             HStack {
                 rollModePicker
-                ForEach(0..<cToggles) { makeToggle($0) }
+                ForEach(0..<toggles.count) { makeToggle(toggles[$0]) }
             }.padding(.bottom)
 
             radiusSlider
 
-            if tumblerIx != 0 { penSlider }
+            if tumblerModel.tumblerType == .innerRing { penSlider }
         }
         .frame(minWidth: 200)
     }

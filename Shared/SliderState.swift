@@ -42,21 +42,26 @@ class SliderStateBase: GKState {
 
     var sm: SliderStateMachine { (super.stateMachine as? SliderStateMachine)! }
 
-    func userInput(_ startStop: Bool, at position: Double) { fatalError("Should not be possible") }
+    func thumbInput(_ startStop: Bool, at position: Double) { fatalError("Should not be possible") }
+    func trackInput(fromPosition: Double, toPosition: Double) { fatalError("Should not be possible") }
 }
 
 class SliderStateAnimating: SliderStateBase {
-    override func userInput(_ startStop: Bool, at position: Double) {
+    override func thumbInput(_ startStop: Bool, at position: Double) {
         sm.enter(SliderStateDragging.self)
+    }
+
+    override func trackInput(fromPosition: Double, toPosition: Double) {
+        sliderPosition = fromPosition
+        trackingPosition = fromPosition
+        targetPosition = toPosition
+
+        sm.enter(SliderStateAnimating.self)
     }
 
     override func didEnter(from previousState: GKState?) {
         step = targetPosition - trackingPosition
 //        print("moving from \(trackingPosition) to \(targetPosition) step \(step)")
-
-//        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
-//            self.sm.update(deltaTime: 0.1)
-//        }
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -83,15 +88,11 @@ class SliderStateAnimating: SliderStateBase {
         }
 
         trackingPosition = newCurrent
-
-//        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
-//            self.sm.update(deltaTime: 0.1)
-//        }
     }
 }
 
 class SliderStateDragging: SliderStateBase {
-    override func userInput(_ startStop: Bool, at position: Double) {
+    override func thumbInput(_ startStop: Bool, at position: Double) {
         precondition(startStop == false, "Shouldn't be possible")
 
         targetPosition = position
@@ -106,13 +107,21 @@ class SliderStateDragging: SliderStateBase {
 }
 
 class SliderStateQuiet: SliderStateBase {
-    override func userInput(_ startStop: Bool, at position: Double) {
+    override func thumbInput(_ startStop: Bool, at position: Double) {
         precondition(startStop == true, "Shouldn't be possible")
 
         sliderPosition = position
         targetPosition = position
         trackingPosition = position
         sm.enter(SliderStateDragging.self)
+    }
+
+    override func trackInput(fromPosition: Double, toPosition: Double) {
+        sliderPosition = fromPosition
+        trackingPosition = fromPosition
+        targetPosition = toPosition
+
+        sm.enter(SliderStateAnimating.self)
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -123,10 +132,11 @@ class SliderStateQuiet: SliderStateBase {
 class SliderStateMachine: GKStateMachine, ObservableObject {
     override var currentState: SliderStateBase! { super.currentState as? SliderStateBase }
 
-    @objc dynamic var targetPosition = 0.0
-    @objc dynamic var trackingPosition = 0.0
-    @objc dynamic var sliderPosition = 0.0
-    @objc dynamic var step = 0.0
+    var targetPosition = 0.0
+    var sliderPosition = 0.0
+    var step = 0.0
+
+    @Published var trackingPosition = 0.0
 
     init() {
         super.init(states: [
@@ -138,5 +148,11 @@ class SliderStateMachine: GKStateMachine, ObservableObject {
         enter(SliderStateQuiet.self)
     }
 
-    func userInput(_ startStop: Bool, at position: Double) { currentState.userInput(startStop, at: position) }
+    func thumbInput(_ startStop: Bool, at position: Double) {
+        currentState.thumbInput(startStop, at: position)
+    }
+
+    func trackInput(fromPosition: Double, toPosition: Double) {
+        currentState.trackInput(fromPosition: fromPosition, toPosition: toPosition)
+    }
 }

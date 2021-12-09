@@ -4,6 +4,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var appModel: AppModel
+    @EnvironmentObject var appState: AppState
 
     #if os(macOS)
     let name = "Spirokon macOS"
@@ -22,9 +23,11 @@ struct SettingsView: View {
                 .padding([.top, .bottom])
 
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(0..<appModel.tumblers.count) {
-                    TumblerSettingsView(tumblerIx: $0, appModel: appModel)
+                ForEach(0..<AppModel.cTumblers) {
+                    TumblerSettingsView()
                         .padding([.top, .bottom])
+                        .environmentObject(appModel.tumblers[$0])
+                        .environmentObject(appState.tumblerStates[$0])
                 }
             }
         }.padding()
