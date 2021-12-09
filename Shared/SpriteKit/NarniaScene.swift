@@ -94,7 +94,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
         let modelRadius = modelRadius_ ?? appModel.tumblers[tumblerIx].radiusSliderState.trackingPosition
-        let forMyRadius = (1.0 - modelRadius)
+        let forMyRadius = tumblerIx == 0 ? 0.0 : (1.0 - modelRadius)
         return forMyRadius
     }
 
