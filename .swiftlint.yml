@@ -15,6 +15,7 @@ disabled_rules: # rule identifiers to exclude from running
   - fixme
   - switch_case_alignment
   - unused_capture_list  # Added by Rob 2021.12.05: of course [self] is unused! I put it there so I don't have to use it explicitly in the closure
+  - orphaned_doc_comment # Added by Rob 2021.12.09: don't care
 opt_in_rules: # some rules are only opt-in
   - empty_count
   # Find all the available rules by running:

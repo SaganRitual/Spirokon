@@ -49,6 +49,8 @@
 		D47874EA2761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EF2761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
 		D47874F02761C7DF006D129F /* LlamaAssemblly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */; };
+		D47874F52761DD07006D129F /* Cbuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874F42761DD07006D129F /* Cbuffer.swift */; };
+		D47874F62761DD07006D129F /* Cbuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874F42761DD07006D129F /* Cbuffer.swift */; };
 		D4CD8A34275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A35275A9F5A00539161 /* ThreqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A24275A9F5800539161 /* ThreqApp.swift */; };
 		D4CD8A36275A9F5A00539161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CD8A25275A9F5800539161 /* ContentView.swift */; };
@@ -91,6 +93,7 @@
 		D42621FF275CFA680034821A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D47874E82761AF45006D129F /* SliderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderState.swift; sourceTree = "<group>"; };
 		D47874EE2761C7DF006D129F /* LlamaAssemblly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaAssemblly.swift; sourceTree = "<group>"; };
+		D47874F42761DD07006D129F /* Cbuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cbuffer.swift; sourceTree = "<group>"; };
 		D4CD8A24275A9F5800539161 /* ThreqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreqApp.swift; sourceTree = "<group>"; };
 		D4CD8A25275A9F5800539161 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D4CD8A26275A9F5A00539161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,6 +129,7 @@
 		D40BA045275D9833005A938F /* Primitives */ = {
 			isa = PBXGroup;
 			children = (
+				D47874F42761DD07006D129F /* Cbuffer.swift */,
 				D40BA048275D9833005A938F /* Extensions.swift */,
 				D40BA049275D9833005A938F /* Overload2D.swift */,
 				D40BA047275D9833005A938F /* YAColor.swift */,
@@ -361,6 +365,7 @@
 				D4CD8AA3275AD47D00539161 /* AppModel.swift in Sources */,
 				D40BA05B275D9833005A938F /* PixieView.swift in Sources */,
 				D4EABC1C276037D300ADAD0B /* Pixlet.swift in Sources */,
+				D47874F52761DD07006D129F /* Cbuffer.swift in Sources */,
 				D40BA05F275D9833005A938F /* Dotter.swift in Sources */,
 				D4EABC1927602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA063275D9833005A938F /* SpritePool.swift in Sources */,
@@ -389,6 +394,7 @@
 				D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */,
 				D40BA05C275D9833005A938F /* PixieView.swift in Sources */,
 				D4EABC1D276037D300ADAD0B /* Pixlet.swift in Sources */,
+				D47874F62761DD07006D129F /* Cbuffer.swift in Sources */,
 				D40BA060275D9833005A938F /* Dotter.swift in Sources */,
 				D4EABC1A27602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA064275D9833005A938F /* SpritePool.swift in Sources */,
