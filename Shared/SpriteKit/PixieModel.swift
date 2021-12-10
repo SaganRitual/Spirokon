@@ -5,13 +5,13 @@ import SpriteKit
 import SwiftUI
 
 class PixieModel: ObservableObject {
+    let color: SKColor
     let pen: PixletPen
     let ring: PixletRing
 
-    let color: SKColor
+    var showRing: AnyCancellable!
 
-    init(_ tumblerModel: TumblerModel) {
-
+    init(_ tumblerModel: TumblerModel, _ tumblerState: TumblerState) {
         self.color = YAColor(Color.pixieBorder).rotateHue(byAngle: Double.random(in: 0..<1))
 
         pen = PixletPen(.pen, tumblerModel.pen)
@@ -20,6 +20,7 @@ class PixieModel: ObservableObject {
         if tumblerModel.tumblerType == .outerRing { pen.sprite.color = .clear }
 
         ring = PixletRing(tumblerModel.tumblerType == .outerRing ? .outerRing : .ring, tumblerModel.radius, color: color)
+        showRing = tumblerState.$showRing.sink { self.showPixie($0) }
     }
 
     func addToScene(_ scene: NarniaScene) {

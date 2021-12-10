@@ -60,7 +60,8 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
     func makePixieModel(_ tumblerIx: Int) {
         let tumblerModel = appModel.tumblers[tumblerIx]
-        let pm = PixieModel(tumblerModel)
+        let tumblerState = appState.tumblerStates[tumblerIx]
+        let pm = PixieModel(tumblerModel, tumblerState)
 
         pm.addToScene(self)
 
