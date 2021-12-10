@@ -7,6 +7,7 @@ protocol Spirokonable: AnyObject {
     var position: CGPoint { get }
     var rollMode: Spirokon.RollMode { get }
     var rotation: Double { get set }
+    var rotationOffsetFromParent: Double { get set }
     var size: CGSize { get }
     var spirokonChildren: [Spirokonable] { get set }
     var spirokonParent: Spirokonable? { get set }
@@ -16,13 +17,17 @@ protocol Spirokonable: AnyObject {
 
 extension Spirokonable {
     var rollMode: Spirokon.RollMode { .normal }
+
+    // swiftlint:disable unused_setter_value
+    var rotationOffsetFromParent: Double { get { .zero } set { } }
+    // swiftlint:enable unused_setter_value
 }
 
 class Spirokon {
     enum RollMode: Hashable { case compensate, doesNotRoll, fullStop, normal }
 
-    private let ancestorOfAll: Spirokonable
     private var all = [Spirokonable]()
+    private let ancestorOfAll: Spirokonable
     private let appModel: AppModel
     private let appState: AppState
 
@@ -68,12 +73,25 @@ class Spirokon {
         // to the next pixie.
         if radians.isInfinite { return }
 
-        pixie.rotation -= radians
+        let parent = pixie.spirokonParent!
+
+        switch pixie.rollMode {
+        case .normal:
+            pixie.rotation -= radians
+            pixie.rotationOffsetFromParent = pixie.rotation - parent.rotation
+
+        case .fullStop:
+            pixie.rotation = parent.rotation + pixie.rotationOffsetFromParent
+
+        case .compensate:
+            pixie.rotationOffsetFromParent = pixie.rotation - parent.rotation
+
+        case .doesNotRoll: break
+        }
 
 //        print(pixie.rollMode == .doesNotRoll ? " " : "*", terminator: "")
 //        print("Roll by \(radians.asString(decimals: 4, fixedWidth: 10))", terminator: "")
 
-        let parent = pixie.spirokonParent!
         let parentRotator = CGAffineTransform(rotationAngle: parent.rotation)
         let parentFullScaleCenter = parent.position << transformPosition(for: parent)
 

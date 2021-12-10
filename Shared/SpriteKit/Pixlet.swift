@@ -1,5 +1,6 @@
 // We are a way for the cosmos to know itself. -- C. Sagan
 
+import Combine
 import SpriteKit
 import SwiftUI
 
@@ -12,6 +13,8 @@ class PixletRing: Pixlet, Spirokonable {
     var position: CGPoint {
         self.spriteType == .outerRing ? CGPoint.zero : CGPoint(x: 1 - xPosition.value, y: 0)
     }
+
+    var rotationOffsetFromParent: Double = 0.0
 
     var size: CGSize { CGSize(radius: xPosition.value) }
 }
@@ -33,10 +36,11 @@ class Pixlet {
     var skNode: SKNode { sprite }
 
     var rollMode = Spirokon.RollMode.normal
+    var rollModeObserver: AnyCancellable!
 
     let sprite: SKSpriteNode
 
-    init(_ spriteType: SpriteType, _ xPosition: SundellPublisher<Double>, color: SKColor? = nil) {
+    init(_ tumblerModel: TumblerModel, _ spriteType: SpriteType, _ xPosition: SundellPublisher<Double>, color: SKColor? = nil) {
         self.spriteType = spriteType
         self.xPosition = xPosition
 
@@ -58,5 +62,7 @@ class Pixlet {
         }
 
         sprite.anchorPoint = .anchorAtCenter
+
+        rollModeObserver = tumblerModel.rollMode.publisher.sink { self.rollMode = $0 }
     }
 }

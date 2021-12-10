@@ -14,12 +14,12 @@ class PixieModel: ObservableObject {
     init(_ tumblerModel: TumblerModel, _ tumblerState: TumblerState) {
         self.color = YAColor(Color.pixieBorder).rotateHue(byAngle: Double.random(in: 0..<1))
 
-        pen = PixletPen(.pen, tumblerModel.pen)
+        pen = PixletPen(tumblerModel, .pen, tumblerModel.pen)
 
         // Never show a pen for the outer ring, at least not yet
         if tumblerModel.tumblerType == .outerRing { pen.sprite.color = .clear }
 
-        ring = PixletRing(tumblerModel.tumblerType == .outerRing ? .outerRing : .ring, tumblerModel.radius, color: color)
+        ring = PixletRing(tumblerModel, tumblerModel.tumblerType == .outerRing ? .outerRing : .ring, tumblerModel.radius, color: color)
         showRing = tumblerState.$showRing.sink { self.showPixie($0) }
     }
 
