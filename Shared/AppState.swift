@@ -25,8 +25,9 @@ class AppState: ObservableObject {
 //    var appIsReady: Bool { true }// readyComponents.contains(.app) }
 
     init(appModel: AppModel) {
-        let outerRing = TumblerState()
-        outerRing.radiusSliderState.trackingPosition = appModel.tumblers[0].radius
+        let outerRingModel = appModel.tumblers[0]
+        let outerRing = TumblerState(outerRingModel)
+
         outerRing.draw = false
         outerRing.showRing = true
 
@@ -34,10 +35,7 @@ class AppState: ObservableObject {
 
         let innerRings: [TumblerState] = (1..<AppModel.cTumblers).map {
             let tumblerModel = appModel.tumblers[$0]
-            let tumblerState = TumblerState()
-
-            tumblerState.radiusSliderState.trackingPosition = tumblerModel.radius
-            tumblerState.penSliderState.trackingPosition = tumblerModel.pen
+            let tumblerState = TumblerState(tumblerModel)
 
             tumblerState.showRing = $0 == 1
             tumblerState.draw = $0 == 1

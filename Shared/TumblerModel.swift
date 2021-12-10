@@ -9,7 +9,7 @@ class TumblerModel: ObservableObject, Identifiable {
 
     init(_ tumblerType: TumblerType) { self.tumblerType = tumblerType }
 
-    @Published var pen = 1.0
-    @Published var radius = 1.0
-    @Published var rollMode = Spirokon.RollMode.normal
+    var pen = SundellPublisher(1.0)
+    var radius = SundellPublisher(1.0)
+    var rollMode = SundellPublisher(Spirokon.RollMode.normal)
 }

@@ -1,12 +1,26 @@
 // We are a way for the cosmos to know itself. -- C. Sagan
 
 import SpriteKit
+import SwiftUI
 
-class Pixlet: Spirokonable {
+class PixletPen: Pixlet, Spirokonable {
+    var position: CGPoint { CGPoint(x: xPosition.value, y: 0) }
+    var size: CGSize { CGSize(radius: 0.01) }
+}
+
+class PixletRing: Pixlet, Spirokonable {
+    var position: CGPoint {
+        self.spriteType == .outerRing ? CGPoint.zero : CGPoint(x: 1 - xPosition.value, y: 0)
+    }
+
+    var size: CGSize { CGSize(radius: xPosition.value) }
+}
+
+class Pixlet {
     enum SpriteType { case outerRing, pen, ring }
+    let spriteType: SpriteType
 
-    var position = CGPoint.zero
-    var size = CGSize.zero
+    var xPosition: SundellPublisher<Double>
 
     var spirokonChildren = [Spirokonable]()
     var spirokonParent: Spirokonable?
@@ -22,8 +36,11 @@ class Pixlet: Spirokonable {
 
     let sprite: SKSpriteNode
 
-    init(_ type: SpriteType, color: SKColor? = nil) {
-        switch type {
+    init(_ spriteType: SpriteType, _ xPosition: SundellPublisher<Double>, color: SKColor? = nil) {
+        self.spriteType = spriteType
+        self.xPosition = xPosition
+
+        switch spriteType {
 
         case .outerRing:
             sprite = SpritePool.rings1024_4.makeSprite()

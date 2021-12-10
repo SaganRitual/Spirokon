@@ -1,15 +1,17 @@
 // We are a way for the cosmos to know itself. -- C. Sagan
 
 import SpriteKit
+import SwiftUI
 
 protocol Spirokonable: AnyObject {
-    var position: CGPoint { get set }
+    var position: CGPoint { get }
     var rollMode: Spirokon.RollMode { get }
     var rotation: Double { get set }
-    var size: CGSize { get set }
+    var size: CGSize { get }
     var spirokonChildren: [Spirokonable] { get set }
     var spirokonParent: Spirokonable? { get set }
     var skNode: SKNode { get }
+    var xPosition: SundellPublisher<Double> { get set }
 }
 
 extension Spirokonable {
@@ -17,7 +19,7 @@ extension Spirokonable {
 }
 
 class Spirokon {
-    enum RollMode { case compensate, doesNotRoll, fullStop, normal }
+    enum RollMode: Hashable { case compensate, doesNotRoll, fullStop, normal }
 
     private let ancestorOfAll: Spirokonable
     private var all = [Spirokonable]()

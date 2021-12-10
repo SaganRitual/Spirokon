@@ -12,16 +12,16 @@ class AppModel: ObservableObject {
             let tumblerType: TumblerModel.TumblerType = $0 == 0 ? .outerRing : .innerRing
             let newTumbler = TumblerModel(tumblerType)
 
-            newTumbler.rollMode = .normal
+            newTumbler.rollMode.value = .normal
 
             if tumblerType == .outerRing {
-                newTumbler.radius = 1.0
-                newTumbler.pen = 0.0    // Future feature, pen in the outermost ring?
+                newTumbler.radius.value = 1.0
+                newTumbler.pen.value = 0.0    // Future feature, pen in the outermost ring?
             }
 
             if tumblerType == .innerRing {
-                newTumbler.radius = 0.625
-                newTumbler.pen = 0.0375
+                newTumbler.radius.value = 0.625
+                newTumbler.pen.value = 0.0375
             }
 
             return newTumbler

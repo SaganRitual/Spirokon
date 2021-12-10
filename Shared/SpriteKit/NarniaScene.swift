@@ -37,6 +37,8 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var skNode: SKNode { self }
     // swiftlint:enable unused_setter_value
 
+    var xPosition = SundellPublisher(0.0)
+
     init(
         appModel: AppModel, appState: AppState, llamaState: LlamaState, mainControlsState: MainControlsState
     ) {
@@ -59,64 +61,44 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     }
 
     func makePixieModel(_ tumblerIx: Int) {
-        let pm = PixieModel(tumblerIx)
+        let tumblerModel = appModel.tumblers[tumblerIx]
+        let pm = PixieModel(tumblerModel)
 
         pm.addToScene(self)
 
         pixies.append(pm)
-
-        let r = appState.tumblerStates[tumblerIx].radiusSliderState.$trackingPosition.sink {
-            self.setRadius($0, for: tumblerIx)
-        }
-
-        radiusObservers.append(r)
-
-        let p =  appState.tumblerStates[tumblerIx].penSliderState.$trackingPosition.sink {
-            self.setPen($0, for: tumblerIx)
-        }
-
-        penObservers.append(p)
-
-        let s = appState.tumblerStates[tumblerIx].$showRing.sink {
-            self.pixies[tumblerIx].showPixie($0)
-        }
-
-        showRingObservers.append(s)
-
-        setRadius(appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition, for: tumblerIx)
-        setPen(appState.tumblerStates[tumblerIx].penSliderState.trackingPosition, for: tumblerIx)
     }
 
     func penOffset(for tumblerIx: Int) -> Double {
-        appState.tumblerStates[tumblerIx].penSliderState.trackingPosition
+        appState.tumblerStates[tumblerIx].penSliderState.trackingPosition.value
     }
 
     func pixieOffset(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition
+        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition.value
         let forMyRadius = tumblerIx == 0 ? 0.0 : (1.0 - modelRadius)
         return forMyRadius
     }
 
     func pixieRadius(for tumblerIx: Int, modelRadius modelRadius_: Double? = nil) -> Double {
-        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition
+        let modelRadius = modelRadius_ ?? appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition.value
         return modelRadius
     }
 
-    func propagateScale(startAt: Int) {
-        guard startAt < pixies.count - 1 else { return }
+//    func propagateScale(startAt: Int) {
+//        guard startAt < pixies.count - 1 else { return }
+//
+//        for tumblerIx in startAt..<appModel.tumblers.count {
+//            let r = pixieRadius(for: tumblerIx)
+//            let p = pixieOffset(for: tumblerIx)
+//
+//            pixies[tumblerIx].ring.size = CGSize(radius: r)
+//            pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
+//        }
+//    }
 
-        for tumblerIx in startAt..<appModel.tumblers.count {
-            let r = pixieRadius(for: tumblerIx)
-            let p = pixieOffset(for: tumblerIx)
-
-            pixies[tumblerIx].ring.size = CGSize(radius: r)
-            pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
-        }
-    }
-
-    func setPen(_ newPen: Double, for tumblerIx: Int) {
-        pixies[tumblerIx].pen.position.x = newPen
-    }
+//    func setPen(_ newPen: Double, for tumblerIx: Int) {
+//        pixies[tumblerIx].pen.position.x = newPen
+//    }
 
     func setSpirokonRelationships() {
         var parent: Spirokonable = self
@@ -127,16 +109,16 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         }
     }
 
-    func setRadius(_ newRadius: Double, for tumblerIx: Int) {
-        let r = pixieRadius(for: tumblerIx, modelRadius: newRadius)
-        let p = pixieOffset(for: tumblerIx, modelRadius: newRadius)
-
-        pixies[tumblerIx].pen.position.x = penOffset(for: tumblerIx)
-        pixies[tumblerIx].ring.size = CGSize(radius: r)
-        pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
-
-        propagateScale(startAt: tumblerIx)
-    }
+//    func setRadius(_ newRadius: Double, for tumblerIx: Int) {
+//        let r = pixieRadius(for: tumblerIx, modelRadius: newRadius)
+//        let p = pixieOffset(for: tumblerIx, modelRadius: newRadius)
+//
+//        pixies[tumblerIx].pen.position.x = penOffset(for: tumblerIx)
+//        pixies[tumblerIx].ring.size = CGSize(radius: r)
+//        pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
+//
+//        propagateScale(startAt: tumblerIx)
+//    }
 
     func getTumblerIx(for model: TumblerModel) -> Int {
         appModel.tumblers.firstIndex { $0.id == model.id }!
