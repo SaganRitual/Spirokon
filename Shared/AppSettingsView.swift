@@ -3,13 +3,11 @@
 import SwiftUI
 
 struct AppSettingsView: View {
-    @EnvironmentObject var appModel: AppModel
-    @EnvironmentObject var appState: AppState
+    @ObservedObject var mainControlsState: MainControlsState
 
-    @State private var colorSpeed = 0.0
-    @State private var cycleSpeed = 0.0
-    @State private var dotDensity = 0.0
-    @State private var trailDecay = 0.0
+    init(mainControlsState: MainControlsState) {
+        _mainControlsState = ObservedObject(wrappedValue: mainControlsState)
+    }
 
     var body: some View {
         VStack {
@@ -19,12 +17,12 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: Binding(
-                        get: { cycleSpeed },
-                        set: { cycleSpeed = $0; appState.cycleSpeed = $0 }
+                        get: { mainControlsState.cycleSpeed },
+                        set: { mainControlsState.cycleSpeed = $0 }
                     ),
-                    in: AppState.cycleSpeedRange,
+                    in: MainControlsState.cycleSpeedRange,
                     label: { Text("Speed") }
-                ).onAppear { cycleSpeed = appState.cycleSpeed }
+                )
             }
 
             HStack {
@@ -33,12 +31,12 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: Binding(
-                        get: { dotDensity },
-                        set: { dotDensity = $0; appState.dotDensity = $0 }
+                        get: { mainControlsState.dotDensity },
+                        set: { mainControlsState.dotDensity = $0 }
                     ),
-                    in: AppState.dotDensityRange,
+                    in: MainControlsState.dotDensityRange,
                     label: { Text("Density") }
-                ).onAppear { dotDensity = appState.dotDensity }
+                )
             }
 
             HStack {
@@ -47,12 +45,12 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: Binding(
-                        get: { colorSpeed },
-                        set: { colorSpeed = $0; appState.colorSpeed = $0 }
+                        get: { mainControlsState.colorSpeed },
+                        set: { mainControlsState.colorSpeed = $0 }
                     ),
-                    in: AppState.colorSpeedRange,
+                    in: MainControlsState.colorSpeedRange,
                     label: { Text("Color speed") }
-                ).onAppear { colorSpeed = appState.colorSpeed }
+                )
             }
 
             HStack {
@@ -61,20 +59,13 @@ struct AppSettingsView: View {
 
                 Slider(
                     value: Binding(
-                        get: { trailDecay },
-                        set: { trailDecay = $0; appState.trailDecay = $0 }
+                        get: { mainControlsState.trailDecay },
+                        set: { mainControlsState.trailDecay = $0 }
                     ),
-                    in: AppState.trailDecayRange,
+                    in: MainControlsState.trailDecayRange,
                     label: { Text("Trail decay") }
-                ).onAppear { trailDecay = appState.trailDecay }
+                )
             }
         }
-    }
-}
-
-struct AppUIView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppSettingsView()
-            .preferredColorScheme(.dark)
     }
 }

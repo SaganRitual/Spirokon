@@ -3,17 +3,8 @@
 import SwiftUI
 
 class AppState: ObservableObject {
-    @Published var colorSpeed = 0.15
-    @Published var cycleSpeed = 0.15
-    @Published var dotDensity = 4.0
-    @Published var trailDecay = 10.0
-
+    @Published var mainControlsState = MainControlsState()
     @Published var tumblerStates = [TumblerState]()
-
-    static let colorSpeedRange = 0.0...2.0
-    static let cycleSpeedRange = 0.0...1.0
-    static let dotDensityRange = 0.0...30.0
-    static let trailDecayRange = 0.0...60.0
 
     enum Component { case app, narnia, pixieViews, settingsView, spirokon }
 

@@ -9,6 +9,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     let appState: AppState
     var dotter: Dotter!
     let llamaState: LlamaState
+    let mainControlsState: MainControlsState
     var spirokon: Spirokon!
 
     var cycleDurationObserver: AnyCancellable!
@@ -40,13 +41,14 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         self.appModel = appModel
         self.appState = appState
         self.llamaState = llamaState
+        self.mainControlsState = appState.mainControlsState
 
         super.init(size: CGSize(width: 2048, height: 2048))
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.scaleMode = .aspectFit
         self.backgroundColor = .black
 
-        self.dotter = Dotter(appState, self, dotSize: CGSize(radius: 3))
+        self.dotter = Dotter(mainControlsState, self, dotSize: CGSize(radius: 3))
         self.spirokon = Spirokon(appModel: appModel, appState: appState, ancestorOfAll: self)
     }
 
@@ -172,8 +174,8 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
             return
         }
 
-        let rotateBy = appState.cycleSpeed * Double.tau * truncatedDeltaTime
-        let oversample = 1.0 / max(1.0, appState.dotDensity)
+        let rotateBy = mainControlsState.cycleSpeed * Double.tau * truncatedDeltaTime
+        let oversample = 1.0 / max(1.0, mainControlsState.dotDensity)
 
         for dt in stride(from: 0.0, to: truncatedDeltaTime, by: truncatedDeltaTime * oversample) {
             for t in appState.tumblerStates {
@@ -184,7 +186,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
             spirokon.rollEverything(rotateBy: rotateBy * oversample)
 
             // If the user slides to < 1 dot per tick, turn off all drawing
-            if appState.dotDensity >= 1.0 {
+            if mainControlsState.dotDensity >= 1.0 {
                 spirokon.dropDots(currentTime: self.previousTickTime! + dt, deltaTime: truncatedDeltaTime * oversample)
             }
         }

@@ -47,6 +47,8 @@
 		D4262201275CFA680034821A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FF275CFA680034821A /* SettingsView.swift */; };
 		D4525F5D276305C200496779 /* LlamaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5C276305C200496779 /* LlamaState.swift */; };
 		D4525F5E276305C200496779 /* LlamaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5C276305C200496779 /* LlamaState.swift */; };
+		D4525F602763090200496779 /* MainControlsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5F2763090200496779 /* MainControlsState.swift */; };
+		D4525F612763090200496779 /* MainControlsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5F2763090200496779 /* MainControlsState.swift */; };
 		D47874E92761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EA2761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EF2761C7DF006D129F /* LlamaLlocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaLlocator.swift */; };
@@ -96,6 +98,7 @@
 		D42621FC275C90560034821A /* TumblerSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TumblerSettingsView.swift; sourceTree = "<group>"; };
 		D42621FF275CFA680034821A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D4525F5C276305C200496779 /* LlamaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaState.swift; sourceTree = "<group>"; };
+		D4525F5F2763090200496779 /* MainControlsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainControlsState.swift; sourceTree = "<group>"; };
 		D47874E82761AF45006D129F /* SliderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderState.swift; sourceTree = "<group>"; };
 		D47874EE2761C7DF006D129F /* LlamaLlocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaLlocator.swift; sourceTree = "<group>"; };
 		D47874F42761DD07006D129F /* Cbuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cbuffer.swift; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 				D4CD8A25275A9F5800539161 /* ContentView.swift */,
 				D47874EE2761C7DF006D129F /* LlamaLlocator.swift */,
 				D4525F5C276305C200496779 /* LlamaState.swift */,
+				D4525F5F2763090200496779 /* MainControlsState.swift */,
 				D4EABC1827602E8500ADAD0B /* Spirokon.swift */,
 				D42621FF275CFA680034821A /* SettingsView.swift */,
 				D47874E82761AF45006D129F /* SliderState.swift */,
@@ -377,6 +381,7 @@
 				D4EABC1C276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D47874F52761DD07006D129F /* Cbuffer.swift in Sources */,
 				D40BA05F275D9833005A938F /* Dotter.swift in Sources */,
+				D4525F602763090200496779 /* MainControlsState.swift in Sources */,
 				D4EABC1927602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA063275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05D275D9833005A938F /* NarniaScene.swift in Sources */,
@@ -408,6 +413,7 @@
 				D4EABC1D276037D300ADAD0B /* Pixlet.swift in Sources */,
 				D47874F62761DD07006D129F /* Cbuffer.swift in Sources */,
 				D40BA060275D9833005A938F /* Dotter.swift in Sources */,
+				D4525F612763090200496779 /* MainControlsState.swift in Sources */,
 				D4EABC1A27602E8500ADAD0B /* Spirokon.swift in Sources */,
 				D40BA064275D9833005A938F /* SpritePool.swift in Sources */,
 				D40BA05E275D9833005A938F /* NarniaScene.swift in Sources */,

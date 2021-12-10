@@ -11,6 +11,7 @@ struct ContentView: View {
             HStack(alignment: .top) {
                 if appState.readyComponents.contains(.narnia) {
                     SettingsView().onAppear { appState.markComponentReady(.settingsView) }
+                        .environmentObject(appState.mainControlsState)
                 }
 
                 NarniaView(appModel: appModel, appState: appState, llamaState: appState.llamaState).padding(5)

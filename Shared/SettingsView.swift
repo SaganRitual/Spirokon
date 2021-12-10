@@ -3,6 +3,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var mainControlsState: MainControlsState
     @EnvironmentObject var appModel: AppModel
     @EnvironmentObject var appState: AppState
 
@@ -19,8 +20,9 @@ struct SettingsView: View {
             Text(self.name)
                 .font(.largeTitle)
 
-            AppSettingsView()
+            AppSettingsView(mainControlsState: mainControlsState)
                 .padding([.top, .bottom])
+                .environmentObject(mainControlsState)
 
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(0..<AppModel.cTumblers) {
