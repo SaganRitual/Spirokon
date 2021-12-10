@@ -8,7 +8,6 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     let appModel: AppModel
     let appState: AppState
     var dotter: Dotter!
-    let llamaState: LlamaState
     let mainControlsState: MainControlsState
     var spirokon: Spirokon!
 
@@ -40,11 +39,10 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var xPosition = SundellPublisher(0.0)
 
     init(
-        appModel: AppModel, appState: AppState, llamaState: LlamaState, mainControlsState: MainControlsState
+        appModel: AppModel, appState: AppState, mainControlsState: MainControlsState
     ) {
         self.appModel = appModel
         self.appState = appState
-        self.llamaState = llamaState
         self.mainControlsState = mainControlsState
 
         super.init(size: CGSize(width: 2048, height: 2048))

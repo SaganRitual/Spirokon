@@ -7,7 +7,6 @@ import SwiftUI
 struct NarniaView: View {
     @EnvironmentObject var appModel: AppModel
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var llamaState: LlamaState
     @EnvironmentObject var narniaScene: NarniaScene
 
     var body: some View {
