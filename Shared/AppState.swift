@@ -3,11 +3,9 @@
 import SwiftUI
 
 class AppState: ObservableObject {
-    @Published var averageLlama = 0.0
     @Published var colorSpeed = 0.15
     @Published var cycleSpeed = 0.15
     @Published var dotDensity = 4.0
-    @Published var llamasLlocated = 0
     @Published var trailDecay = 10.0
 
     @Published var tumblerStates = [TumblerState]()
@@ -20,6 +18,8 @@ class AppState: ObservableObject {
     enum Component { case app, narnia, pixieViews, settingsView, spirokon }
 
     @Published var readyComponents = Set<Component>()
+
+    let llamaState = LlamaState()
 
     func markComponentReady(_ component: Component) {
         readyComponents.insert(component)

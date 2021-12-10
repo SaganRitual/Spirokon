@@ -13,7 +13,8 @@ struct ContentView: View {
                     SettingsView().onAppear { appState.markComponentReady(.settingsView) }
                 }
 
-                NarniaView(appModel: appModel, appState: appState).padding(5)
+                NarniaView(appModel: appModel, appState: appState, llamaState: appState.llamaState).padding(5)
+                    .environmentObject(appState.llamaState)
             }
             .opacity(appState.readyComponents.contains(.narnia) ? 1.0 : 0.0)
             .animation(.linear, value: appState.readyComponents.contains(.narnia))
@@ -21,6 +22,7 @@ struct ContentView: View {
             LlamaLlocator()
                 .opacity(appState.readyComponents.contains(.narnia) ? 0.0 : 1.0)
                 .animation(.linear, value: appState.readyComponents.contains(.narnia))
+                .environmentObject(appState.llamaState)
         }
     }
 }

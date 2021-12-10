@@ -8,6 +8,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     let appModel: AppModel
     let appState: AppState
     var dotter: Dotter!
+    let llamaState: LlamaState
     var spirokon: Spirokon!
 
     var cycleDurationObserver: AnyCancellable!
@@ -35,9 +36,10 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var skNode: SKNode { self }
     // swiftlint:enable unused_setter_value
 
-    init(appModel: AppModel, appState: AppState) {
+    init(appModel: AppModel, appState: AppState, llamaState: LlamaState) {
         self.appModel = appModel
         self.appState = appState
+        self.llamaState = llamaState
 
         super.init(size: CGSize(width: 2048, height: 2048))
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -166,10 +168,7 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         }
 
         guard appState.appIsReady else {
-            deltas.put(deltaTime)
-            appState.llamasLlocated += 1
-            appState.averageLlama = deltas.elements.reduce(0.0, { $0 + ($1 ?? 0.0) }) / Double(deltas.count)
-            assert(appState.averageLlama.isFinite)
+            llamaState.llocateLlama(deltaTime)
             return
         }
 

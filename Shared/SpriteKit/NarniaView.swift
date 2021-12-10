@@ -6,14 +6,20 @@ import SwiftUI
 
 struct NarniaView: View {
     let appModel: AppModel
+    let llamaState: LlamaState
+
     @ObservedObject var appState: AppState
 
     @StateObject var nscene: NarniaScene
 
-    init(appModel: AppModel, appState: AppState) {
+    init(appModel: AppModel, appState: AppState, llamaState: LlamaState) {
         self.appModel = appModel
+        self.llamaState = llamaState
+
         self._appState = ObservedObject(wrappedValue: appState)
-        self._nscene = StateObject(wrappedValue: NarniaScene(appModel: appModel, appState: appState))
+
+        let n = NarniaScene(appModel: appModel, appState: appState, llamaState: llamaState)
+        self._nscene = StateObject(wrappedValue: n)
     }
 
     var body: some View {

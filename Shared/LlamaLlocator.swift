@@ -3,12 +3,7 @@
 import SwiftUI
 
 struct LlamaLlocator: View {
-    @EnvironmentObject var appModel: AppModel
-    @EnvironmentObject var appState: AppState
-
-    var llamasLlocated: Double {
-        Double(appState.llamasLlocated) + Double.random(in: 0..<1)
-    }
+    @EnvironmentObject var llamaState: LlamaState
 
     var body: some View {
         ZStack {
@@ -18,7 +13,8 @@ struct LlamaLlocator: View {
 
             VStack {
                 Text("Llocating Llamas")
-                Text("\(llamasLlocated.asString(decimals: 2, fixedWidth: 8)) : \(appState.averageLlama.asString(decimals: 4, fixedWidth: 6))")
+                Text("\(llamaState.llamasLlocated.asString(decimals: 2, fixedWidth: 8))")
+                Text("\(llamaState.averageLlama.asString(decimals: 4, fixedWidth: 6))")
             }
             .font(Font.system(size: 60).monospaced())
         }

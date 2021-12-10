@@ -45,6 +45,8 @@
 		D42621FE275C90560034821A /* TumblerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FC275C90560034821A /* TumblerSettingsView.swift */; };
 		D4262200275CFA680034821A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FF275CFA680034821A /* SettingsView.swift */; };
 		D4262201275CFA680034821A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42621FF275CFA680034821A /* SettingsView.swift */; };
+		D4525F5D276305C200496779 /* LlamaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5C276305C200496779 /* LlamaState.swift */; };
+		D4525F5E276305C200496779 /* LlamaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4525F5C276305C200496779 /* LlamaState.swift */; };
 		D47874E92761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EA2761AF45006D129F /* SliderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874E82761AF45006D129F /* SliderState.swift */; };
 		D47874EF2761C7DF006D129F /* LlamaLlocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47874EE2761C7DF006D129F /* LlamaLlocator.swift */; };
@@ -93,6 +95,7 @@
 		D42621F9275C8D990034821A /* AppSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettingsView.swift; sourceTree = "<group>"; };
 		D42621FC275C90560034821A /* TumblerSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TumblerSettingsView.swift; sourceTree = "<group>"; };
 		D42621FF275CFA680034821A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D4525F5C276305C200496779 /* LlamaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaState.swift; sourceTree = "<group>"; };
 		D47874E82761AF45006D129F /* SliderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderState.swift; sourceTree = "<group>"; };
 		D47874EE2761C7DF006D129F /* LlamaLlocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LlamaLlocator.swift; sourceTree = "<group>"; };
 		D47874F42761DD07006D129F /* Cbuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cbuffer.swift; sourceTree = "<group>"; };
@@ -179,6 +182,7 @@
 				D47BC2B527623DEA005E1A74 /* AppState.swift */,
 				D4CD8A25275A9F5800539161 /* ContentView.swift */,
 				D47874EE2761C7DF006D129F /* LlamaLlocator.swift */,
+				D4525F5C276305C200496779 /* LlamaState.swift */,
 				D4EABC1827602E8500ADAD0B /* Spirokon.swift */,
 				D42621FF275CFA680034821A /* SettingsView.swift */,
 				D47874E82761AF45006D129F /* SliderState.swift */,
@@ -366,6 +370,7 @@
 				D42621FA275C8D9A0034821A /* AppSettingsView.swift in Sources */,
 				D40BA053275D9833005A938F /* YAColor.swift in Sources */,
 				D4262200275CFA680034821A /* SettingsView.swift in Sources */,
+				D4525F5D276305C200496779 /* LlamaState.swift in Sources */,
 				D4CD8AA3275AD47D00539161 /* AppModel.swift in Sources */,
 				D47BC2B92762405D005E1A74 /* TumblerState.swift in Sources */,
 				D40BA05B275D9833005A938F /* PixieView.swift in Sources */,
@@ -396,6 +401,7 @@
 				D42621FB275C8D9A0034821A /* AppSettingsView.swift in Sources */,
 				D40BA054275D9833005A938F /* YAColor.swift in Sources */,
 				D4262201275CFA680034821A /* SettingsView.swift in Sources */,
+				D4525F5E276305C200496779 /* LlamaState.swift in Sources */,
 				D4CD8AA4275AD47D00539161 /* AppModel.swift in Sources */,
 				D47BC2BA2762405D005E1A74 /* TumblerState.swift in Sources */,
 				D40BA05C275D9833005A938F /* PixieView.swift in Sources */,
