@@ -3,11 +3,7 @@
 import SwiftUI
 
 struct AppSettingsView: View {
-    @ObservedObject var mainControlsState: MainControlsState
-
-    init(mainControlsState: MainControlsState) {
-        _mainControlsState = ObservedObject(wrappedValue: mainControlsState)
-    }
+    @EnvironmentObject var mainControlsState: MainControlsState
 
     var body: some View {
         VStack {

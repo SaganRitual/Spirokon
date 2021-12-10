@@ -6,12 +6,6 @@ struct TumblerSettingsView: View {
     @EnvironmentObject var tumblerModel: TumblerModel
     @EnvironmentObject var tumblerState: TumblerState
 
-    @State private var drawDots = true
-    @State private var pen = 0.0
-    @State private var radius = 0.0
-    @State private var rollMode = Spirokon.RollMode.normal
-    @State private var showRing = true
-
     var modes: [Spirokon.RollMode] {
         tumblerModel.tumblerType == .outerRing ? [.fullStop, .normal] : [.fullStop, .compensate, .normal]
     }
@@ -41,37 +35,27 @@ struct TumblerSettingsView: View {
         case .drawDots:
             return Toggle(
                 isOn: Binding(
-                    get: {
-                        print("draw dots toggle get \(drawDots)")
-                        return drawDots },
-                    set: {
-                        print("draw dots toggle update \($0)")
-                        drawDots = $0; tumblerState.draw = $0 }
+                    get: { tumblerState.draw },
+                    set: { tumblerState.draw = $0 }
                 ),
 
                 label: {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                 }
             )
-            .onAppear { drawDots = tumblerState.draw }
             .toggleStyle(.button)
             .controlSize(SwiftUI.ControlSize.small)
 
         case .showRing:
             return Toggle(
                 isOn: Binding(
-                    get: {
-                        print("show ring toggle get \(showRing)")
-                        return showRing },
-                    set: {
-                        print("show ring toggle update \($0)")
-                        showRing = $0; tumblerState.showRing = $0 }
+                    get: { tumblerState.showRing },
+                    set: { tumblerState.showRing = $0 }
                 ),
                 label: {
                     Image(systemName: "eye.circle.fill")
                 }
             )
-            .onAppear { showRing = tumblerState.showRing }
             .toggleStyle(.button)
             .controlSize(SwiftUI.ControlSize.small)
         }
@@ -81,8 +65,8 @@ struct TumblerSettingsView: View {
         Picker(
             "",
             selection: Binding(
-                get: { rollMode },
-                set: { rollMode = $0; tumblerModel.rollMode = $0 }
+                get: { tumblerModel.rollMode },
+                set: { tumblerModel.rollMode = $0 }
             )
         ) {
             ForEach(0..<modes.count) {
@@ -90,7 +74,6 @@ struct TumblerSettingsView: View {
             }
         }
         .pickerStyle(.segmented)
-        .onAppear { rollMode = tumblerModel.rollMode }
     }
 
     func tapTrack(sliderState: SliderStateMachine, direction: Double) {
@@ -128,11 +111,16 @@ struct TumblerSettingsView: View {
                 }
 
             Slider(
-                value: $radius,
+                value: Binding(
+                    get: { tumblerState.radiusSliderState.trackingPosition },
+                    set: { tumblerState.radiusSliderState.trackingPosition = $0 }
+                ),
                 in: 0.0...1.0,
                 label: { Text("Radius") },
-                onEditingChanged: { tumblerState.radiusSliderState.thumbInput($0, at: radius) }
-            ).onAppear { radius = tumblerState.radiusSliderState.trackingPosition }
+                onEditingChanged: {
+                    tumblerState.radiusSliderState.thumbInput($0, at: tumblerState.radiusSliderState.trackingPosition)
+                }
+            )
 
             Image(systemName: "plus.circle.fill")
                 .onTapGesture {
@@ -158,11 +146,16 @@ struct TumblerSettingsView: View {
                 }
 
             Slider(
-                value: $pen,
+                value: Binding(
+                    get: { tumblerState.penSliderState.trackingPosition },
+                    set: { tumblerState.penSliderState.trackingPosition = $0 }
+                ),
                 in: 0.0...1.0,
                 label: { Text("Pen") },
-                onEditingChanged: { tumblerState.penSliderState.thumbInput($0, at: pen) }
-            ).onAppear { pen = tumblerState.penSliderState.trackingPosition }
+                onEditingChanged: {
+                    tumblerState.penSliderState.thumbInput($0, at: tumblerState.penSliderState.trackingPosition)
+                }
+            )
 
             Image(systemName: "plus.circle.fill")
                 .onTapGesture {

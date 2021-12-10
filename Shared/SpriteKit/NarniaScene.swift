@@ -37,11 +37,13 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
     var skNode: SKNode { self }
     // swiftlint:enable unused_setter_value
 
-    init(appModel: AppModel, appState: AppState, llamaState: LlamaState) {
+    init(
+        appModel: AppModel, appState: AppState, llamaState: LlamaState, mainControlsState: MainControlsState
+    ) {
         self.appModel = appModel
         self.appState = appState
         self.llamaState = llamaState
-        self.mainControlsState = appState.mainControlsState
+        self.mainControlsState = mainControlsState
 
         super.init(size: CGSize(width: 2048, height: 2048))
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)

@@ -3,7 +3,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var appModel: AppModel
     @EnvironmentObject var appState: AppState
 
     var body: some View {
@@ -11,11 +10,9 @@ struct ContentView: View {
             HStack(alignment: .top) {
                 if appState.readyComponents.contains(.narnia) {
                     SettingsView().onAppear { appState.markComponentReady(.settingsView) }
-                        .environmentObject(appState.mainControlsState)
                 }
 
-                NarniaView(appModel: appModel, appState: appState, llamaState: appState.llamaState).padding(5)
-                    .environmentObject(appState.llamaState)
+                NarniaView().padding(5)
             }
             .opacity(appState.readyComponents.contains(.narnia) ? 1.0 : 0.0)
             .animation(.linear, value: appState.readyComponents.contains(.narnia))
@@ -23,7 +20,6 @@ struct ContentView: View {
             LlamaLlocator()
                 .opacity(appState.readyComponents.contains(.narnia) ? 0.0 : 1.0)
                 .animation(.linear, value: appState.readyComponents.contains(.narnia))
-                .environmentObject(appState.llamaState)
         }
     }
 }

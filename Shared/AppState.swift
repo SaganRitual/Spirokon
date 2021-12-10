@@ -3,8 +3,7 @@
 import SwiftUI
 
 class AppState: ObservableObject {
-    @Published var mainControlsState = MainControlsState()
-    @Published var tumblerStates = [TumblerState]()
+    var tumblerStates = [TumblerState]()
 
     enum Component { case app, narnia, pixieViews, settingsView, spirokon }
 
