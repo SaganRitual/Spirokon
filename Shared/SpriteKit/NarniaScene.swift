@@ -84,22 +84,6 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         return modelRadius
     }
 
-//    func propagateScale(startAt: Int) {
-//        guard startAt < pixies.count - 1 else { return }
-//
-//        for tumblerIx in startAt..<appModel.tumblers.count {
-//            let r = pixieRadius(for: tumblerIx)
-//            let p = pixieOffset(for: tumblerIx)
-//
-//            pixies[tumblerIx].ring.size = CGSize(radius: r)
-//            pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
-//        }
-//    }
-
-//    func setPen(_ newPen: Double, for tumblerIx: Int) {
-//        pixies[tumblerIx].pen.position.x = newPen
-//    }
-
     func setSpirokonRelationships() {
         var parent: Spirokonable = self
         for pixie in pixies {
@@ -108,17 +92,6 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
             parent = pixie.ring
         }
     }
-
-//    func setRadius(_ newRadius: Double, for tumblerIx: Int) {
-//        let r = pixieRadius(for: tumblerIx, modelRadius: newRadius)
-//        let p = pixieOffset(for: tumblerIx, modelRadius: newRadius)
-//
-//        pixies[tumblerIx].pen.position.x = penOffset(for: tumblerIx)
-//        pixies[tumblerIx].ring.size = CGSize(radius: r)
-//        pixies[tumblerIx].ring.position = CGPoint(x: p, y: 0)
-//
-//        propagateScale(startAt: tumblerIx)
-//    }
 
     func getTumblerIx(for model: TumblerModel) -> Int {
         appModel.tumblers.firstIndex { $0.id == model.id }!
@@ -143,25 +116,13 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         let truncatedDeltaTime = min(deltaTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-//        if deltaTime < 0.02 {
-//            cTicksInLimit += 1
-//            if cTicksInLimit > 60 { appState.markComponentReady(.narnia) }
-//        } else if !appState.readyComponents.contains(.narnia) {
-//            cTicksInLimit = 0
-//        }
-
-//        guard appState.appIsReady else {
-//            llamaState.llocateLlama(deltaTime)
-//            return
-//        }
-
         let rotateBy = mainControlsState.cycleSpeed * Double.tau * truncatedDeltaTime
         let oversample = 1.0 / max(1.0, mainControlsState.dotDensity)
 
         for dt in stride(from: 0.0, to: truncatedDeltaTime, by: truncatedDeltaTime * oversample) {
             for t in appState.tumblerStates {
-                t.radiusSliderState.update(deltaTime: truncatedDeltaTime)
-                t.penSliderState.update(deltaTime: truncatedDeltaTime)
+                t.radiusSliderState.update(deltaTime: truncatedDeltaTime * oversample)
+                t.penSliderState.update(deltaTime: truncatedDeltaTime * oversample)
             }
 
             spirokon.rollEverything(rotateBy: rotateBy * oversample)

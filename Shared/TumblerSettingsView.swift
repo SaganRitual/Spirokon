@@ -93,6 +93,13 @@ struct TumblerSettingsView: View {
                     )
                 }
             )
+
+            Image(systemName: "plus.circle.fill")
+                .onTapGesture {
+                    tumblerState.penSliderState.tapStepper(
+                        sliderState: tumblerState.penSliderState, direction: 1.0
+                    )
+                }
         }
     }
 
@@ -118,6 +125,13 @@ struct TumblerSettingsView: View {
                     )
                 }
             )
+
+            Image(systemName: "plus.circle.fill")
+                .onTapGesture {
+                    tumblerState.radiusSliderState.tapStepper(
+                        sliderState: tumblerState.radiusSliderState, direction: 1.0
+                    )
+                }
         }
     }
 

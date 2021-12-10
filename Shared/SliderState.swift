@@ -3,26 +3,11 @@
 import GameplayKit
 import SwiftUI
 
-// 🙏 https://stackoverflow.com/users/1842511/creak
-// https://stackoverflow.com/a/25730573/1610473
-enum Easer {
-    static func InOutQuadBlend(deltaTime: Double) -> Double {
-        var t = deltaTime
-
-        if t <= 0.5 { return 2.0 * t * t }
-
-        t -= 0.5
-
-        return 2.0 * t * (1.0 - t) + 0.5
-    }
-
-    static func ParametricBlend(deltaTime t: Double) -> Double {
-        let sqt = t * t
-        return sqt / (2.0 * (sqt - t) + 1.0)
-    }
-}
-
 class SliderStateBase: GKState {
+    var anchorPosition: Double {
+        get { sm.anchorPosition } set { sm.anchorPosition = newValue }
+    }
+
     var trackingPosition: Double {
         get { sm.trackingPosition.value } set { sm.trackingPosition.value = newValue }
     }
@@ -39,16 +24,20 @@ class SliderStateBase: GKState {
 }
 
 class SliderStateAnimating: SliderStateBase {
+    var easer: Easer!
+
     override func thumbInput(_ startStop: Bool, at thumbXPosition: Double) {
         precondition(startStop == true, "Shouldn't be possible")
+        self.anchorPosition = thumbXPosition
 //        print("thumb input while animaing")
 //        self.thumbXPosition = thumbXPosition
         sm.enter(SliderStateDragging.self)
     }
 
     override func didEnter(from previousState: GKState?) {
-        step = thumbXPosition - trackingPosition
-//        print("moving from \(trackingPosition) to \(thumbXPosition) step \(step)")
+        step = thumbXPosition - anchorPosition
+        easer = Easer(intensity: 2, scale: 2.0)
+//        print("moving from \(trackingPosition.asString(decimals: 3)) to \(thumbXPosition.asString(decimals: 3)) step \(step.asString(decimals: 3))")
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -59,16 +48,17 @@ class SliderStateAnimating: SliderStateBase {
         let sign = step / abs(step)
         assert(sign.isFinite)
 
-        let newCurrent = trackingPosition + sign * Easer.ParametricBlend(deltaTime: seconds * 2)
-//        print("nc \(newCurrent)")
-        let direction_ = step / abs(step)
-        let direction = direction_.isFinite ? direction_ : 0
+        let newCurrent = anchorPosition + step * easer.robjohn(deltaTime: seconds)
+
+//        print("nc \(newCurrent.asString(decimals: 3))")
+//        let direction_ = step / abs(step)
+//        let direction = direction_.isFinite ? direction_ : 0
 
         defer {
-//            print("current \(trackingPosition) + \(step) * \(seconds) = \(newCurrent) direction \(direction)")
+//            print("started at \(thumbXPosition.asString(decimals: 3)) + \(step.asString(decimals: 3)) * \(seconds.asString(decimals: 3)) = \(newCurrent.asString(decimals: 3)) direction \(direction)")
         }
 
-        if (direction * newCurrent) >= (direction * thumbXPosition) {
+        if easer.totalElapsedTime >= 1.0 {
             trackingPosition = thumbXPosition
 //            print("Finished")
             sm.enter(SliderStateQuiet.self)
@@ -82,8 +72,6 @@ class SliderStateAnimating: SliderStateBase {
 class SliderStateDragging: SliderStateBase {
     override func thumbInput(_ startStop: Bool, at thumbXPosition: Double) {
         precondition(startStop == false, "Shouldn't be possible")
-//        self.thumbXPosition = thumbXPosition
-
 //        print("SliderStateDragging: start dragging from current \(trackingPosition) to target \(self.thumbXPosition)")
 
         sm.enter(SliderStateAnimating.self)
@@ -97,6 +85,7 @@ class SliderStateDragging: SliderStateBase {
 class SliderStateQuiet: SliderStateBase {
     override func thumbInput(_ startStop: Bool, at thumbXPosition: Double) {
         precondition(startStop == true, "Shouldn't be possible")
+        self.anchorPosition = thumbXPosition
 //        print("SliderStateQuiet: visible thumb only, starting position \(thumbXPosition)")
 //        self.thumbXPosition = thumbXPosition
         sm.enter(SliderStateDragging.self)
@@ -110,6 +99,7 @@ class SliderStateQuiet: SliderStateBase {
 class SliderStateMachine: GKStateMachine, ObservableObject {
     override var currentState: SliderStateBase! { super.currentState as? SliderStateBase }
 
+    var anchorPosition = 0.0
     let iconName: String
     let label: String
     var trackingPosition: SundellPublisher<Double>
@@ -152,7 +142,9 @@ class SliderStateMachine: GKStateMachine, ObservableObject {
             newValue = sliderState.trackingPosition.value + (t == 0 ? 0.125 : t) * direction
         }
 
-        print("tapStepper \(newValue)")
+        thumbInput(true, at: sliderThumbPosition.value)
+        sliderThumbPosition.value = newValue
+        thumbInput(false, at: newValue)
     }
 
     func thumbInput(_ startStop: Bool, at thumbXPosition: Double) {

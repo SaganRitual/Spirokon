@@ -19,7 +19,7 @@ class PixieModel: ObservableObject {
         // Never show a pen for the outer ring, at least not yet
         if tumblerModel.tumblerType == .outerRing { pen.sprite.color = .clear }
 
-        ring = PixletRing(.ring, tumblerModel.radius, color: color)
+        ring = PixletRing(tumblerModel.tumblerType == .outerRing ? .outerRing : .ring, tumblerModel.radius, color: color)
     }
 
     func addToScene(_ scene: NarniaScene) {
