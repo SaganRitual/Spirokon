@@ -5,24 +5,24 @@ import SwiftUI
 class AppState: ObservableObject {
     var tumblerStates = [TumblerState]()
 
-    enum Component { case app, narnia, pixieViews, settingsView, spirokon }
-
-    @Published var readyComponents = Set<Component>()
-
-    let llamaState = LlamaState()
-
-    func markComponentReady(_ component: Component) {
-        readyComponents.insert(component)
-        if readyComponents.contains(.narnia) &&
-            readyComponents.contains(.pixieViews) &&
-            readyComponents.contains(.settingsView) &&
-            readyComponents.contains(.spirokon)
-        {
-            readyComponents.insert(.app)
-        }
-    }
-
-    var appIsReady: Bool { readyComponents.contains(.app) }
+//    enum Component { case app, narnia, pixieViews, settingsView, spirokon }
+//
+//    @Published var readyComponents = Set<Component>()
+//
+//    func markComponentReady(_ component: Component) {
+//        readyComponents.insert(component)
+//        if readyComponents.contains(.narnia) &&
+//            readyComponents.contains(.pixieViews) &&
+//            readyComponents.contains(.settingsView) &&
+//            readyComponents.contains(.spirokon)
+//        {
+//            readyComponents.insert(.app)
+//        }
+//
+//        readyComponents.insert(.app)
+//    }
+//
+//    var appIsReady: Bool { true }// readyComponents.contains(.app) }
 
     init(appModel: AppModel) {
         let outerRing = TumblerState()
@@ -33,24 +33,16 @@ class AppState: ObservableObject {
         tumblerStates.append(outerRing)
 
         let innerRings: [TumblerState] = (1..<AppModel.cTumblers).map {
-            let newTumbler = TumblerState()
+            let tumblerModel = appModel.tumblers[$0]
+            let tumblerState = TumblerState()
 
-            if $0 != 0 {
-                newTumbler.radiusSliderState.trackingPosition = appModel.tumblers[$0].radius
-                newTumbler.penSliderState.trackingPosition = appModel.tumblers[$0].pen
-            }
+            tumblerState.radiusSliderState.trackingPosition = tumblerModel.radius
+            tumblerState.penSliderState.trackingPosition = tumblerModel.pen
 
-            if $0 == 1 {
-                newTumbler.showRing = true
-                newTumbler.draw = true
-            }
+            tumblerState.showRing = $0 == 1
+            tumblerState.draw = $0 == 1
 
-            if $0 > 1  {
-                newTumbler.showRing = false
-                newTumbler.draw = false
-            }
-
-            return newTumbler
+            return tumblerState
         }
 
         tumblerStates.append(contentsOf: innerRings)

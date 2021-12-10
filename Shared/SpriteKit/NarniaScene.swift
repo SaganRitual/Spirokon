@@ -52,9 +52,13 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
         self.dotter = Dotter(mainControlsState, self, dotSize: CGSize(radius: 3))
         self.spirokon = Spirokon(appModel: appModel, appState: appState, ancestorOfAll: self)
+
+        for tumblerIx in 0..<appModel.tumblers.count { makePixieModel(tumblerIx) }
+
+        setSpirokonRelationships()
     }
 
-    func makePixieView(_ tumblerIx: Int) -> some View {
+    func makePixieModel(_ tumblerIx: Int) {
         let pm = PixieModel(tumblerIx)
 
         pm.addToScene(self)
@@ -81,8 +85,6 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
 
         setRadius(appState.tumblerStates[tumblerIx].radiusSliderState.trackingPosition, for: tumblerIx)
         setPen(appState.tumblerStates[tumblerIx].penSliderState.trackingPosition, for: tumblerIx)
-
-        return PixieView()
     }
 
     func penOffset(for tumblerIx: Int) -> Double {
@@ -159,22 +161,17 @@ class NarniaScene: SKScene, SKSceneDelegate, ObservableObject, Spirokonable {
         let truncatedDeltaTime = min(deltaTime, 1.0 / 60.0)
         self.previousTickTime = currentTime
 
-        if deltaTime < 0.02 {
-            cTicksInLimit += 1
-            if cTicksInLimit > 60 { appState.markComponentReady(.narnia) }
-        } else if !appState.readyComponents.contains(.narnia) {
-            cTicksInLimit = 0
-        }
+//        if deltaTime < 0.02 {
+//            cTicksInLimit += 1
+//            if cTicksInLimit > 60 { appState.markComponentReady(.narnia) }
+//        } else if !appState.readyComponents.contains(.narnia) {
+//            cTicksInLimit = 0
+//        }
 
-        if appState.readyComponents.contains(.pixieViews) && !appState.appIsReady {
-            setSpirokonRelationships()
-            appState.markComponentReady(.spirokon)
-        }
-
-        guard appState.appIsReady else {
-            llamaState.llocateLlama(deltaTime)
-            return
-        }
+//        guard appState.appIsReady else {
+//            llamaState.llocateLlama(deltaTime)
+//            return
+//        }
 
         let rotateBy = mainControlsState.cycleSpeed * Double.tau * truncatedDeltaTime
         let oversample = 1.0 / max(1.0, mainControlsState.dotDensity)
